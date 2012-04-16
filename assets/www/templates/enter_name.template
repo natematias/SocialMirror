@@ -1,0 +1,4 @@
+<div id="name_entry_view">
+  <input type="text" name="Name" id="participant_name"/>
+  <div class="button" id="name_button">Next</div>
+</div>
