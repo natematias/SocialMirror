@@ -1,0 +1,54 @@
+#bullseye_options{
+  background:#eee;
+  border-right:2px solid #333;
+  width:210px;
+  text-align:left;
+  height:100%;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  display:inline-block;
+  margin:0px;
+  padding:0px;
+  padding-left:10px;
+}
+
+.bullseye_option{
+  display:inline-block;
+  background:rgb(33,85,97);
+  color:white;
+  font-size:14px;
+  padding:8px;
+  padding-top:2px;
+  padding-bottom:2px;
+  border-radius:5px;
+  margin-bottom:4px;
+  margin-top:4px;
+  -moz-box-shadow:    1px 1px 1px 1px #666;
+  -webkit-box-shadow: 1px 1px 1px 1px #666;
+  box-shadow:         1px 1px 1px 1px #666;
+}
+
+#bullseye{
+  display:inline-block;
+  width:730px;
+  height:100%;
+  vertical-align:top;
+  overflow:hidden;
+}
+
+#bullseye_canvas{
+/*  width:784px;
+  height:100%;*/
+}
+
+#bullseye_auxilliary{
+  vertical-align:top;
+  display:inline-block;
+  width:54px;
+  height:100%;
+  text-align:center;
+}
+
+#bullseye_auxilliary img{
+  margin-top:150px;
+}
