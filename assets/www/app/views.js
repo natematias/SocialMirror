@@ -28,6 +28,10 @@ var SplashView = Backbone.View.extend({
     this.mlgroups = new MLGroups();
     this.relationships = new ParticipantMLGroupRelationships();
     this.dragging = null;
+
+   // participant = new Participant({name:"Bill", :member_status:"Member", years:11, role:"Engineer"});
+    //this.participants.add(participant);
+
     this.loadMLGroups();
     this.render();
   },
@@ -65,6 +69,9 @@ var SplashView = Backbone.View.extend({
       this.canvas = canvas_element.getContext('2d');
       midpoint = canvas_element.offsetWidth/2;
       height = canvas_element.offsetHeight * 2 + 60;
+      // bullseye_origin and bullseye_distance are used to calculate categories
+      this.bullseye_origin = {x:midpoint, y:height}
+      this.bullseye_distances = {medium:height*0.88, small: height*0.73}
       bottom_offset = 60;
       middle_offset = 0;
       // draw inner circle
@@ -72,7 +79,7 @@ var SplashView = Backbone.View.extend({
       this.canvas.fillRect(0,0,midpoint*2, height);
       this.canvas.beginPath();  
       this.canvas.fillStyle = "rgb(255,220,186)";
-      this.canvas.arc(midpoint,height, height*0.88,0,(Math.PI/180)*180,true)
+      this.canvas.arc(midpoint,height, this.bullseye_distances.medium,0,(Math.PI/180)*180,true)
       this.canvas.fill();
       this.canvas.beginPath();
       this.canvas.fillStyle = "rgb(137,190,204)";
@@ -97,9 +104,9 @@ var SplashView = Backbone.View.extend({
       var pageY = e.pageY;
     }
  
-    this.dragpoint_offset_x = pageX - ml_option.offset().left
+    this.dragpoint_offset_x = ml_option.width();
     // 12 because that is the font size
-    this.dragpoint_offset_y = pageY - ml_option.offset().top + 12;
+    this.dragpoint_offset_y = ml_option.height();
     ml_option.css({"position":"absolute"});
     ml_option.addClass("dragging");
     ml_option.css({"left": pageX-this.dragpoint_offset_x, "top": pageY-this.dragpoint_offset_y})
@@ -142,6 +149,22 @@ var SplashView = Backbone.View.extend({
     this.dragpoint_offset_x = null;
     this.dragoint_offset_y = null;
     this.dragging = null;
+  },
+
+  bullseyeCategory: function(element){
+    //this.bullseye_origin = {x:midpoint, y:height}
+    //this.bullseye_distances = {medium:height*0.88, small: height*0.73}
+    center_x = element.offset().left + element.width()/2 - $("#bullseye_options").width();
+    center_y = element.offset().top + element.height()/2;
+    distance = Math.sqrt( Math.pow(this.bullseye_origin.x - center_x, 2) + 
+                          Math.pow(this.bullseye_origin.y - center_y, 2));
+    if(distance > this.bullseye_distances.medium){
+      return "far";
+    }else if(distance > this.bullseye_distances.small){
+      return "medium";
+    }else{
+      return "close";
+    }
   },
 
   loadMLGroups: function(){
