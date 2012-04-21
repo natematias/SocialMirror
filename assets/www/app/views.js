@@ -7,6 +7,7 @@ var SplashView = Backbone.View.extend({
       "touchend #start": "startSurvey",
       "touchend #demo": "startDemo",
       "touchend #name_button": "saveName",
+      "touchend #bullseye_auxilliary": "reportRelationships",
       "touchstart .bullseye_option": 'startOptionDrag',
       "touchmove .bullseye_option": 'continueDragging',
       "touchend .bullseye_option": 'endOptionDrag'
@@ -14,6 +15,7 @@ var SplashView = Backbone.View.extend({
       "click #start": "startSurvey",
       "click #demo": "startDemo",
       "click #name_button": "saveName",
+      "click #bullseye_auxilliary": "reportRelationships",
       "mousedown .bullseye_option": 'startOptionDrag',
       "mousemove .bullseye_option": 'continueDragging',
       "mouseup .bullseye_option": 'endOptionDrag',
@@ -22,15 +24,15 @@ var SplashView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging');
+    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'reportRelationships');
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
     this.relationships = new ParticipantMLGroupRelationships();
     this.dragging = null;
 
-   // participant = new Participant({name:"Bill", :member_status:"Member", years:11, role:"Engineer"});
-    //this.participants.add(participant);
+    this.current_participant = new Participant({name:"Default", member_status:"Default", years:0, role:"Default"});
+    this.participants.add(this.current_participant);
 
     this.loadMLGroups();
     this.render();
@@ -149,6 +151,18 @@ var SplashView = Backbone.View.extend({
     this.dragpoint_offset_x = null;
     this.dragoint_offset_y = null;
     this.dragging = null;
+    this.recordParticipantMLGroupRelationship(ml_option);
+  },
+
+  recordParticipantMLGroupRelationship: function(element){
+    that = this;
+    this.mlgroups.each(function(group){
+      if(group.get("name") == element.text()){
+        that.relationships.add({group:group, participant:that.participant,
+                                type:that.bullseyeCategory(element)})
+        return;
+      }
+    });
   },
 
   bullseyeCategory: function(element){
@@ -165,6 +179,16 @@ var SplashView = Backbone.View.extend({
     }else{
       return "close";
     }
+  },
+ 
+  reportRelationships: function(element){
+    that = this;
+    report_string = ""
+    this.relationships.each(function(relationship){
+      report_string += relationship.get("group").get("name") + ": " + relationship.get("type");
+      report_string +="\n"
+    });
+    alert(report_string);
   },
 
   loadMLGroups: function(){
