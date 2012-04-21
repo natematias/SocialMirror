@@ -1,6 +1,5 @@
 #bullseye_options{
-  background:#eee;
-  border-right:2px solid #333;
+  background:white;
   width:210px;
   text-align:left;
   height:100%;
@@ -32,6 +31,7 @@
   -ms-user-select: none;
   user-select: none;
   cursor:pointer;
+  z-index:100;
 }
 
 .bullseye_option.dragging{
@@ -47,6 +47,7 @@
   height:100%;
   vertical-align:top;
   overflow:hidden;
+  z-index:10;
 }
 
 #bullseye_canvas{

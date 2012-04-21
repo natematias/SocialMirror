@@ -4,9 +4,9 @@ var SplashView = Backbone.View.extend({
   events: function() {
     return MOBILE ?
     {
-      "click #start": "startSurvey",
-      "click #demo": "startDemo",
-      "click #name_button": "saveName",
+      "touchend #start": "startSurvey",
+      "touchend #demo": "startDemo",
+      "touchend #name_button": "saveName",
       "touchstart .bullseye_option": 'startOptionDrag',
       "touchmove .bullseye_option": 'continueDragging',
       "touchend .bullseye_option": 'endOptionDrag'
@@ -40,7 +40,8 @@ var SplashView = Backbone.View.extend({
    $("#initial_buttons_view").load("templates/enter_name.template");
   },
 
-  startDemo: function(){
+  startDemo: function(e){
+    this.cleanEvent(e);
     //$(this.el).load("templates/bullseye.template");
     that = this;
     $.ajax({url:"templates/bullseye.template",
@@ -89,16 +90,17 @@ var SplashView = Backbone.View.extend({
     }
     if( navigator.userAgent.match(/Android/i) ) {
       e.preventDefault();
-      pageX = e.touch.pageX;
-      pageY = e.touch.pageY;
+      var pageX = e.originalEvent.touches[0].pageX;
+      var pageY = e.originalEvent.touches[0].pageY;
     }else{
-      pageX = e.pageX;
-      pageY = e.pageY;
+      var pageX = e.pageX;
+      var pageY = e.pageY;
     }
  
     this.dragpoint_offset_x = pageX - ml_option.offset().left
     // 12 because that is the font size
     this.dragpoint_offset_y = pageY - ml_option.offset().top + 12;
+    ml_option.css({"position":"absolute"});
     ml_option.addClass("dragging");
     ml_option.css({"left": pageX-this.dragpoint_offset_x, "top": pageY-this.dragpoint_offset_y})
   },
@@ -111,8 +113,8 @@ var SplashView = Backbone.View.extend({
     }
     if( navigator.userAgent.match(/Android/i) ) {
       e.preventDefault();
-      pageX = e.touch.pageX;
-      pageY = e.touch.pageY;
+      pageX = e.originalEvent.touches[0].pageX;
+      pageY = e.originalEvent.touches[0].pageY;
     }else{
       pageX = e.pageX;
       pageY = e.pageY;
@@ -125,11 +127,17 @@ var SplashView = Backbone.View.extend({
   endOptionDrag: function(e){
     unzoom_multiplier = 0.25;
     ml_option = $(e.target);
-    drop_offset = ml_option.offset().left + ml_option.width()*unzoom_multiplier;
-    ml_option.css({"position":"absolute"});
-    ml_option.removeClass("dragging");
-    ml_option.css({"left":drop_offset});
-    ml_option.css({"top": ml_option.offset().top+4});// 12px font 2px padding
+
+    if(ml_option.offset().left < $("#bullseye_options").width()){
+      ml_option.removeClass("dragging");
+      ml_option.css({"position":"relative", "top":"auto", "left":"auto"});
+    }else{
+      drop_offset = ml_option.offset().left + ml_option.width()*unzoom_multiplier;
+      ml_option.css({"position":"absolute"});
+      ml_option.removeClass("dragging");
+      ml_option.css({"left":drop_offset});
+      ml_option.css({"top": ml_option.offset().top+4});// 12px font 2px padding
+    }
     this.dragpoint_offset_x = null;
     this.dragoint_offset_y = null;
     this.dragging = null;
@@ -143,6 +151,11 @@ var SplashView = Backbone.View.extend({
          that.mlgroups.add(group);
        });
      });
+  },
+  
+  cleanEvent: function(e){
+    e.stopPropagation()
+    e.preventDefault()
   }
 });
 window.MOBILE = navigator.userAgent.match(/mobile/i);
