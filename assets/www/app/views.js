@@ -122,6 +122,7 @@ var SplashView = Backbone.View.extend({
   },
 
   continueDragging: function(e){
+    e.preventDefault();
     ml_option = $(e.target);
     if(this.dragging!=null && ml_option.get(0) === this.dragging.get(0)){
     }else{
