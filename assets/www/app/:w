@@ -24,7 +24,7 @@ var SplashView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'reportRelationships', 'saveOrUpdateRelationship');
+    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'reportRelationships');
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
@@ -155,7 +155,25 @@ var SplashView = Backbone.View.extend({
   },
 
   recordParticipantMLGroupRelationship: function(element){
-    this.saveOrUpdateRelationship(element.text(), this.bullseyeCategory(element));
+    var that = this;
+    var updated = null;
+    //first check the list of current relationships
+    this.relationships.each(function(relationship){
+      if(relationship.get("group").get("name")==element.text()){
+        relationship.set("type", that.bullseyeCategory(element));
+        updated = true;
+        return;
+      }
+    });
+    if(updated){return}
+    // if not, then add a new relationship
+    this.mlgroups.each(function(group){
+      if(group.get("name") == element.text()){
+        that.relationships.add({group:group, participant:that.participant,
+                                type:that.bullseyeCategory(element)})
+        return;
+      }
+    });
   },
 
   bullseyeCategory: function(element){
@@ -194,8 +212,8 @@ var SplashView = Backbone.View.extend({
      });
   },
 
-  saveOrUpdateRelationship: function(groupName, relationshipType){
-    var that = this;
+  saveRelationship: function(groupName, relationshipType){
+   var that = this;
     var updated = null;
     //first check the list of current relationships
     this.relationships.each(function(relationship){
@@ -210,7 +228,7 @@ var SplashView = Backbone.View.extend({
     this.mlgroups.each(function(group){
       if(group.get("name") == groupName){
         that.relationships.add({group:group, participant:that.participant,
-                                type:relationshipType})
+                                type:that.bullseyeCategory(element)})
         return;
       }
     });
