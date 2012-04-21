@@ -6,7 +6,7 @@
   </div>
   <div class="form_item">
     <div class="label">Your affiliation with the Media Lab:</div>
-    <select name="left" id="left_newspaper">
+    <select name="affiliation" id="affiliation">
       <option>Member</option>
       <option>Prospective Member</option>
       <option>Invited Attendee</option>
@@ -16,7 +16,7 @@
   </div>
   <div class="form_item">
     <div class="label">How long have you been connected with the Lab?</div>
-    <select name="left" id="left_newspaper">
+    <select name="connection_years" id="connection_years">
       <option>1</option>
       <option>2</option>
       <option>3</option>
