@@ -155,7 +155,18 @@ var SplashView = Backbone.View.extend({
   },
 
   recordParticipantMLGroupRelationship: function(element){
-    that = this;
+    var that = this;
+    var updated = null;
+    //first check the list of current relationships
+    this.relationships.each(function(relationship){
+      if(relationship.get("group").get("name")==element.text()){
+        relationship.set("type", that.bullseyeCategory(element));
+        updated = true;
+        return;
+      }
+    });
+    if(updated){return}
+    // if not, then add a new relationship
     this.mlgroups.each(function(group){
       if(group.get("name") == element.text()){
         that.relationships.add({group:group, participant:that.participant,
