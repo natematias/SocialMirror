@@ -122,6 +122,7 @@ var SplashView = Backbone.View.extend({
     if(this.dragpoint_offset_x){
       ml_option.css({"left": pageX-this.dragpoint_offset_x, "top": pageY-this.dragpoint_offset_y})
     }
+    return true;
   },
 
   endOptionDrag: function(e){
