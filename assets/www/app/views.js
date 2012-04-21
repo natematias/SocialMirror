@@ -21,12 +21,12 @@ var SplashView = Backbone.View.extend({
       "click #bullseye_auxilliary": "reportRelationships", //sidebar
       "mousedown .bullseye_option": 'startOptionDrag', // dragging options
       "mousemove .bullseye_option": 'continueDragging',
-      "mouseup .bullseye_option": 'endOptionDrag',
-      "mouseout .bullseye_option": 'continueDragging', // scrolling option bar
+      "mouseup .bullseye_option": 'endOptionDrag'
+/*      "mouseout .bullseye_option": 'continueDragging', // scrolling option bar
       "mousedown #bullseye_options": 'startScrolling',
       "mousemove #bullseye_options": 'continueScrolling',
       "mouseup #bullseye_options": 'endScrolling',
-      "mouseout #bullseye_options": 'endScrolling'
+      "mouseout #bullseye_options": 'endScrolling'*/
     }
   },
 
@@ -61,7 +61,7 @@ var SplashView = Backbone.View.extend({
               type: "GET",
               dataType: "text",
               success: function(data){
-                $(that.el).html(_.template(data, {groups:that.mlgroups}));
+                $(that.el).html(_.template(data, {groups:that.mlgroups, close_label:"collaboration", middle_label:"connection", far_label:"inspiration"}));
                 that.drawBullseye();
               }
     });

@@ -38,9 +38,9 @@
   position:absolute;
   font-size:28px;
   border-radius:10px;
-  -moz-box-shadow:    3px 3px 4px 1px #333;
+/*  -moz-box-shadow:    3px 3px 4px 1px #333;
   -webkit-box-shadow: 3px 3px 4px 1px #333;
-  box-shadow:3px 3px 4px 1px #333;
+  box-shadow:3px 3px 4px 1px #333;*/
   z-index:1000;
 }
 
@@ -51,6 +51,33 @@
   vertical-align:top;
   overflow:hidden;
   z-index:10;
+  position:relative;
+}
+
+#bullseye div{
+  z-index:11;
+  position:absolute;
+  font-size:64px;
+  font-weight:bold;
+  opacity:0.5;
+}
+
+#bullseye #far_label{
+  color:#994;
+  top:2px;
+  left:2x;
+}
+
+#bullseye #middle_label{
+  color:#974;
+  top:220px;
+  left:2px;
+}
+
+#bullseye #close_label{
+  color:rgb(197, 240, 244);
+  top:430px;
+  left:2px;
 }
 
 #bullseye_canvas{

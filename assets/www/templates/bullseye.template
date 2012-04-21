@@ -6,8 +6,7 @@
 <div class="bullseye_option" id="<%=group.get("name")%>"><%=group.get("name")%></div>
 
 <%  }); %>  
-</div><!-- bullseye --><div id="bullseye">
-  <canvas id="bullseye_canvas" width="750" height="600"></div>
+</div><!-- bullseye --><div id="bullseye"><div id="close_label"><%=close_label%></div><div id="middle_label"><%=middle_label%></div><div id="far_label"><%=far_label%></div><canvas id="bullseye_canvas" width="750" height="600"></canvas>
 </div>
 
 <!-- microphone -->
