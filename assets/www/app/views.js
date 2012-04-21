@@ -7,24 +7,31 @@ var SplashView = Backbone.View.extend({
       "touchend #start": "startSurvey",
       "touchend #demo": "startDemo",
       "touchend #name_button": "saveName",
-      "touchend #bullseye_auxilliary": "reportRelationships",
-      "touchstart .bullseye_option": 'startOptionDrag',
+      "touchend #bullseye_auxilliary": "reportRelationships", // sidebar
+      "touchstart .bullseye_option": 'startOptionDrag', // dragging options
       "touchmove .bullseye_option": 'continueDragging',
-      "touchend .bullseye_option": 'endOptionDrag'
+      "touchend .bullseye_option": 'endOptionDrag',
+      "touchstart #bullseye_options": 'startScrolling', // scrolling option bar
+      "touchmove #bullseye_options": 'continueScrolling',
+      "touchend #bullseye_options": 'endScrolling'
     }:{
       "click #start": "startSurvey",
       "click #demo": "startDemo",
       "click #name_button": "saveName",
-      "click #bullseye_auxilliary": "reportRelationships",
-      "mousedown .bullseye_option": 'startOptionDrag',
+      "click #bullseye_auxilliary": "reportRelationships", //sidebar
+      "mousedown .bullseye_option": 'startOptionDrag', // dragging options
       "mousemove .bullseye_option": 'continueDragging',
       "mouseup .bullseye_option": 'endOptionDrag',
-      "mouseout .bullseye_option": 'continueDragging',
+      "mouseout .bullseye_option": 'continueDragging', // scrolling option bar
+      "mousedown #bullseye_options": 'startScrolling',
+      "mousemove #bullseye_options": 'continueScrolling',
+      "mouseup #bullseye_options": 'endScrolling',
+      "mouseout #bullseye_options": 'endScrolling'
     }
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'reportRelationships', 'saveOrUpdateRelationship', 'removeRelationship');
+    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'reportRelationships', 'saveOrUpdateRelationship', 'removeRelationship', 'startScrolling', 'continueScrolling', 'endScrolling');
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
@@ -97,7 +104,7 @@ var SplashView = Backbone.View.extend({
     }else{
       this.dragging = ml_option;
     }
-    if( navigator.userAgent.match(/Android/i) ) {
+    if(MOBILE) {
       e.preventDefault();
       var pageX = e.originalEvent.touches[0].pageX;
       var pageY = e.originalEvent.touches[0].pageY;
@@ -225,7 +232,39 @@ var SplashView = Backbone.View.extend({
       }
     });
   },
-  
+
+  getTouchLocation: function(e){
+    if(MOBILE) {
+      e.preventDefault();
+      var pageX = e.originalEvent.touches[0].pageX;
+      var pageY = e.originalEvent.touches[0].pageY;
+    }else{
+      var pageX = e.pageX;
+      var pageY = e.pageY;
+    }
+   return {x: pageX, y:pageY};
+  },
+
+  // Scrollbar handlers
+  startScrolling: function(e){
+    option_bar = $(e.target);
+    this.scrollOrigin = option_bar.scrollTop();
+    this.scrollTouchOrigin = this.getTouchLocation(e);
+    this.scrolling = true;
+  },
+
+  continueScrolling: function(e){
+    if(this.scrolling){
+      current_location = this.getTouchLocation(e);
+      $(e.target).scrollTop(this.scrollOrigin + (this.scrollTouchOrigin.y - current_location.y));
+    }
+  },
+
+  endScrolling: function(e){
+    this.scrollOrigin = null;
+    this.scrolling = false;
+  },
+
   cleanEvent: function(e){
     e.stopPropagation()
     e.preventDefault()
