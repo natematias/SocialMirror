@@ -138,7 +138,7 @@ var SplashView = Backbone.View.extend({
     unzoom_multiplier = 0.25;
     ml_option = $(e.target);
 
-    if(ml_option.offset().left < $("#bullseye_options").width()){
+    if(ml_option.offset().left + (ml_option.width()/7) < $("#bullseye_options").width()){
       ml_option.removeClass("dragging");
       ml_option.css({"position":"relative", "top":"auto", "left":"auto"});
     }else{
@@ -147,11 +147,11 @@ var SplashView = Backbone.View.extend({
       ml_option.removeClass("dragging");
       ml_option.css({"left":drop_offset});
       ml_option.css({"top": ml_option.offset().top+4});// 12px font 2px padding
+      this.recordParticipantMLGroupRelationship(ml_option);
     }
     this.dragpoint_offset_x = null;
     this.dragoint_offset_y = null;
     this.dragging = null;
-    this.recordParticipantMLGroupRelationship(ml_option);
   },
 
   recordParticipantMLGroupRelationship: function(element){
