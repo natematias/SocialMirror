@@ -24,7 +24,7 @@ var SplashView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'reportRelationships', 'saveOrUpdateRelationship');
+    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'reportRelationships', 'saveOrUpdateRelationship', 'removeRelationship');
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
@@ -141,6 +141,7 @@ var SplashView = Backbone.View.extend({
     if(ml_option.offset().left + (ml_option.width()/7) < $("#bullseye_options").width()){
       ml_option.removeClass("dragging");
       ml_option.css({"position":"relative", "top":"auto", "left":"auto"});
+      this.removeRelationship(ml_option.text());
     }else{
       drop_offset = ml_option.offset().left + ml_option.width()*unzoom_multiplier;
       ml_option.css({"position":"absolute"});
@@ -192,6 +193,15 @@ var SplashView = Backbone.View.extend({
          that.mlgroups.add(group);
        });
      });
+  },
+
+  removeRelationship: function(groupName){
+    that = this;
+    this.relationships.each(function(relationship){
+      if(relationship.get("group").get("name")==groupName){
+        that.relationships.remove(relationship);
+      }
+    });
   },
 
   saveOrUpdateRelationship: function(groupName, relationshipType){
