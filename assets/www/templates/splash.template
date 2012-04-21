@@ -1,5 +1,9 @@
-<div id="logo"><img src="images/social_mirror_logo.png"/></div>
+<div id="logo">
+  <img class="leftlogo" src="images/civic_media_logo.png"/>
+  <img class="main" src="images/social_mirror_logo.png"/>
+  <img class="rightlogo" src="images/rsa_logo.png"/>
+</div>
 <div id="initial_buttons_view">
-  <div class="button" id="demo">Demonstration</div>
+<!--  <div class="button" id="demo">Demonstration</div>-->
   <div class="button" id="start">Begin</div>
 </div>

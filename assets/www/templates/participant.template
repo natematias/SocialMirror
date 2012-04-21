@@ -1,0 +1,58 @@
+<div id="participant_form" align="center">
+<div class="form_dialogue">
+  <div class="form_item">
+    <div class="label" >Name:</div>
+    <input type="text" name="Name" id="participant_name"/>
+  </div>
+  <div class="form_item">
+    <div class="label">Your affiliation with the Media Lab:</div>
+    <select name="left" id="left_newspaper">
+      <option>Member</option>
+      <option>Prospective Member</option>
+      <option>Invited Attendee</option>
+      <option>Press</option>
+      <option>Other</option>
+    </select>
+  </div>
+  <div class="form_item">
+    <div class="label">How long have you been connected with the Lab?</div>
+    <select name="left" id="left_newspaper">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+      <option>6</option>
+      <option>7</option>
+      <option>8</option>
+      <option>9</option>
+      <option>10</option>
+      <option>11</option>
+      <option>12</option>
+      <option>13</option>
+      <option>14</option>
+      <option>15</option>
+      <option>16</option>
+      <option>17</option>
+      <option>18</option>
+      <option>19</option>
+      <option>20</option>
+      <option>21</option>
+      <option>22</option>
+      <option>23</option>
+      <option>24</option>
+      <option>25</option>
+      <option>26</option>
+    </select>
+  </div>
+  <div class="form_item">
+    <div class="label">What is your role at your company?</div>
+    <input type="text" name="role" id="participant_role"/>
+  </div>
+
+  <div>
+    <div class="button" id="save_survey">Save</div>
+    <div class="button" id="discard">Discard</div>
+  </div>
+</div>
+</div>

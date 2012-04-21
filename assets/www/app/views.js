@@ -4,10 +4,11 @@ var SplashView = Backbone.View.extend({
   events: function() {
     return MOBILE ?
     {
-      "touchend #start": "startSurvey",
-      "touchend #demo": "startDemo",
-      "touchend #name_button": "saveName",
-      "touchend #bullseye_auxilliary": "reportRelationships", // sidebar
+      "touchend #discard": "discardSurvey",
+      "touchend #save_survey": "saveSurvey",
+      "touchend #start": "startDemo",
+//      "touchend #nameutton": "saveName",
+      "touchend #save": "participantSurvey", // sidebar
       "touchstart .bullseye_option": 'startOptionDrag', // dragging options
       "touchmove .bullseye_option": 'continueDragging',
       "touchend .bullseye_option": 'endOptionDrag',
@@ -15,10 +16,11 @@ var SplashView = Backbone.View.extend({
       "touchmove #bullseye_options": 'continueScrolling',
       "touchend #bullseye_options": 'endScrolling'
     }:{
-      "click #start": "startSurvey",
-      "click #demo": "startDemo",
-      "click #name_button": "saveName",
-      "click #bullseye_auxilliary": "reportRelationships", //sidebar
+      "click #discard": "discardSurvey",
+      "click #save_survey": "saveSurvey",
+      "click #start": "startDemo",
+//      "click #nameutton": "saveName",
+      "click #save": "participantSurvey", //sidebar
       "mousedown .bullseye_option": 'startOptionDrag', // dragging options
       "mousemove .bullseye_option": 'continueDragging',
       "mouseup .bullseye_option": 'endOptionDrag'
@@ -31,15 +33,17 @@ var SplashView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'reportRelationships', 'saveOrUpdateRelationship', 'removeRelationship', 'startScrolling', 'continueScrolling', 'endScrolling');
+    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'removeRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey');
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
     this.relationships = new ParticipantMLGroupRelationships();
     this.dragging = null;
 
-    this.current_participant = new Participant({name:"Default", member_status:"Default", years:0, role:"Default"});
-    this.participants.add(this.current_participant);
+    //this.current_participant = new Participant({name:"Default", member_status:"Default", years:0, role:"Default"});
+    this.participants.create({name:"Default", member_status:"Default", years:0, role:"Default"});
+    this.current_participant = this.participants.first();
+   
 
     this.loadMLGroups();
     this.render();
@@ -47,10 +51,6 @@ var SplashView = Backbone.View.extend({
    
   render: function(){
    $(this.el).load("templates/splash.template");
-  },
-
-  startSurvey: function(){
-   $("#initial_buttons_view").load("templates/enter_name.template");
   },
 
   startDemo: function(e){
@@ -183,16 +183,6 @@ var SplashView = Backbone.View.extend({
     }
   },
  
-  reportRelationships: function(element){
-    that = this;
-    report_string = ""
-    this.relationships.each(function(relationship){
-      report_string += relationship.get("group").get("name") + ": " + relationship.get("type");
-      report_string +="\n"
-    });
-    alert(report_string);
-  },
-
   loadMLGroups: function(){
     var that = this;
     jQuery.getJSON("data/medialab_groups.json", function(data){
@@ -269,8 +259,34 @@ var SplashView = Backbone.View.extend({
   cleanEvent: function(e){
     e.stopPropagation()
     e.preventDefault()
+  },
+  
+  // survey saving and discarding methods
+  participantSurvey: function(element){
+    that = this;
+    $.ajax({url:"templates/participant.template",
+              type: "GET",
+              dataType: "text",
+              success: function(data){
+                $(that.el).html(_.template(data));
+              }
+    });
+  },
+
+  saveSurvey: function(element){
+    report_string = ""
+    this.relationships.each(function(relationship){
+      report_string += relationship.get("group").get("name") + ": " + relationship.get("type");
+      report_string +="\n"
+    });
+    alert(report_string);
+  },
+
+  discardSurvey: function(){
+    window.location.reload();
   }
 });
 window.MOBILE = navigator.userAgent.match(/mobile/i);
+window.localStorage.clear();
 var splashView = new SplashView;
 $("#frame").html(splashView.el);

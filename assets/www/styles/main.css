@@ -14,12 +14,25 @@ body{
 }
 
 #logo img{
-  width:280px;
+  vertical-align:top;
   margin-top:50px;
 }
 
+img.rightlogo{
+  height:80px;
+  margin-left:80px;
+}
+img.leftlogo{
+  height:80px;
+  margin-right:80px;
+}
+
+#logo img.main{
+  width:280px;
+}
+
 #initial_buttons_view{
-  margin-top:30px;
+  margin-top:80px;
 }
 
 #initial_buttons_view .button{
@@ -33,6 +46,11 @@ body{
   background:rgb(33,85,97);
   color:white;
   font-family:Droid Sans;
+  font-size:28px;
   border-radius:10px;
   display:inline-block;
+  padding-left:10px;
+  padding-right:10px;
+  cursor:pointer;
 }
+

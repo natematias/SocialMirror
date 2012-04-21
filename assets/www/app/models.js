@@ -2,6 +2,7 @@
   // member status
   // years
   // role
+  // id
   var Participant = Backbone.Model.extend({
   });
 
@@ -20,8 +21,10 @@
   });
 
   var Participants = Backbone.Collection.extend({
-    model: Participant
+    model: Participant,
+    localStorage: new Backbone.LocalStorage("SMParticipants")
   });
 
   var ParticipantMLGroupRelationships = Backbone.Collection.extend({
+    localStorage: new Backbone.LocalStorage("SMParticipantMLGroupRelationships")
   });

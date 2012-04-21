@@ -1,0 +1,30 @@
+#participant_form{
+  z-index:1000;
+  width:100%;
+  text-align:center;
+  margin-top:100px;
+  padding:20px;
+  padding-left:200px;
+}
+  
+#participant_form .form_dialogue{
+  text-align:left;
+}
+
+#participant_form .form_item{
+  padding-bottom:5px;
+  margin-bottom:5px;
+  margin-top:15px;
+  border-bottom:1px solid #ddd;
+  width:500px;
+}
+
+#participant_form .label{
+  display:inline-block;
+  margin-right:5px;
+}
+
+#participant_form .button{
+   margin-top:20px;
+   margin-right:40px;
+}
