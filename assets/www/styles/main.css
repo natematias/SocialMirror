@@ -59,5 +59,11 @@ img.leftlogo{
 }
 
 #data_button{
-  display:none;
+  position:absolute;
+  color:white;
+  background:white;
+  width:100px;
+  height:100px;
+  right:0px;
+  bottom:0px;
 }
