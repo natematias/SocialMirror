@@ -41,7 +41,7 @@ var SplashView = Backbone.View.extend({
     this.dragging = null;
 
     //this.current_participant = new Participant({name:"Default", member_status:"Default", years:0, role:"Default"});
-    this.participants.create({name:"Default", member_status:"Default", years:0, role:"Default"});
+    this.participants.add({name:"Default", member_status:"Default", years:0, role:"Default"});
     this.current_participant = this.participants.first();
    
 
@@ -287,6 +287,5 @@ var SplashView = Backbone.View.extend({
   }
 });
 window.MOBILE = navigator.userAgent.match(/mobile/i);
-window.localStorage.clear();
 var splashView = new SplashView;
 $("#frame").html(splashView.el);

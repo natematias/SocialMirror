@@ -21,10 +21,8 @@
   });
 
   var Participants = Backbone.Collection.extend({
-    model: Participant,
-    localStorage: new Backbone.LocalStorage("SMParticipants")
+    model: Participant
   });
 
   var ParticipantMLGroupRelationships = Backbone.Collection.extend({
-    localStorage: new Backbone.LocalStorage("SMParticipantMLGroupRelationships")
   });
