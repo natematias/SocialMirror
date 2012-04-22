@@ -7,6 +7,7 @@ var SplashView = Backbone.View.extend({
       "touchend #discard": "discardSurvey",
       "touchend #save_survey": "saveSurvey",
       "touchend #start": "startDemo",
+      "touchend #data_button": "displayData",
 //      "touchend #nameutton": "saveName",
       "touchend #save": "participantSurvey", // sidebar
       "touchstart .bullseye_option": 'startOptionDrag', // dragging options
@@ -19,6 +20,7 @@ var SplashView = Backbone.View.extend({
       "click #discard": "discardSurvey",
       "click #save_survey": "saveSurvey",
       "click #start": "startDemo",
+      "click #data_button": "displayData",
 //      "click #nameutton": "saveName",
       "click #save": "participantSurvey", //sidebar
       "mousedown .bullseye_option": 'startOptionDrag', // dragging options
@@ -33,11 +35,13 @@ var SplashView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'removeRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey');
+    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'removeRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey', 'displayData');
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
     this.relationships = new ParticipantMLGroupRelationships();
+    this.records = new SMRecords();
+    this.records.fetch();
     this.dragging = null;
 
     //this.current_participant = new Participant({name:"Default", member_status:"Default", years:0, role:"Default"});
@@ -274,12 +278,28 @@ var SplashView = Backbone.View.extend({
   },
 
   saveSurvey: function(element){
-    report_string = ""
+    var report_array = new Array()
     this.relationships.each(function(relationship){
-      report_string += relationship.get("group").get("name") + ": " + relationship.get("type");
-      report_string +="\n"
+      report_array.push(relationship.toJSON());
     });
-    alert(report_string);
+    participant_information = {name:$("#participant_name").val(),
+                               affiliation: $("#affiliation").val(),
+                               connection_years: $("#connection_years").val(),
+                               role: $("#participant_role").val()}
+    report_array.push(participant_information);
+    this.records.create(report_array);
+    window.location.reload();
+  },
+  
+  displayData: function(element){
+    that = this;
+    report_string = "";
+    this.records.fetch();
+    this.records.each(function(record){
+      report_string += JSON.stringify(record.toJSON()) + "\n";
+    });
+    $("#initial_buttons_view").append(_.template("<div id='data_area'><textarea id='data_textarea'><%=report_string%></textarea></div>", {report_string:report_string}));
+    //alert(report_string);
   },
 
   discardSurvey: function(){

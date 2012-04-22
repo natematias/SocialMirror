@@ -54,3 +54,10 @@ img.leftlogo{
   cursor:pointer;
 }
 
+#data_area{
+  margin:10px;
+}
+
+#data_button{
+  display:none;
+}
