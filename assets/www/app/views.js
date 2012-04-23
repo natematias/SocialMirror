@@ -282,10 +282,9 @@ var SplashView = Backbone.View.extend({
     this.relationships.each(function(relationship){
       report_array.push(relationship.toJSON());
     });
-    participant_information = {name:$("#participant_name").val(),
-                               affiliation: $("#affiliation").val(),
-                               connection_years: $("#connection_years").val(),
-                               role: $("#participant_role").val()}
+    participant_information = {affiliation: $("#affiliation").val(),
+                               connection_years: $("#connection_years").val()}
+                               
     report_array.push(participant_information);
     this.records.create(report_array);
     window.location.reload();

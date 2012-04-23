@@ -1,9 +1,9 @@
 <div id="participant_form" align="center">
 <div class="form_dialogue">
-  <div class="form_item">
+<!--  <div class="form_item">
     <div class="label" >Name:</div>
     <input type="text" name="Name" id="participant_name"/>
-  </div>
+  </div>-->
   <div class="form_item">
     <div class="label">Your affiliation with the Media Lab:</div>
     <select name="affiliation" id="affiliation">
@@ -45,10 +45,10 @@
       <option>26</option>
     </select>
   </div>
-  <div class="form_item">
+<!--  <div class="form_item">
     <div class="label">What is your role at your company?</div>
     <input type="text" name="role" id="participant_role"/>
-  </div>
+  </div>-->
 
   <div>
     <div class="button" id="save_survey">Save</div>
