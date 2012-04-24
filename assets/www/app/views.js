@@ -25,9 +25,9 @@ var SplashView = Backbone.View.extend({
       "click #save": "participantSurvey", //sidebar
       "mousedown .bullseye_option": 'startOptionDrag', // dragging options
       "mousemove .bullseye_option": 'continueDragging',
-      "mouseup .bullseye_option": 'endOptionDrag'
-/*      "mouseout .bullseye_option": 'continueDragging', // scrolling option bar
-      "mousedown #bullseye_options": 'startScrolling',
+      "mouseup .bullseye_option": 'endOptionDrag',
+      "mouseout .bullseye_option": 'continueDragging' // scrolling option bar
+/*      "mousedown #bullseye_options": 'startScrolling',
       "mousemove #bullseye_options": 'continueScrolling',
       "mouseup #bullseye_options": 'endScrolling',
       "mouseout #bullseye_options": 'endScrolling'*/
@@ -295,7 +295,7 @@ var SplashView = Backbone.View.extend({
     report_string = "";
     this.records.fetch();
     this.records.each(function(record){
-      report_string += JSON.stringify(record.toJSON()) + "\n";
+      report_string += JSON.stringify(record.toJSON()) + ",\n";
     });
     $("#initial_buttons_view").append(_.template("<div id='data_area'><textarea id='data_textarea'><%=report_string%></textarea></div>", {report_string:report_string}));
     //alert(report_string);
