@@ -5,6 +5,6 @@
 </div>
 <div id="initial_buttons_view">
 <!--  <div class="button" id="demo">Demonstration</div>-->
-  <div class="button" id="start">Begin</div>
+  <a href="#position"><div class="button" id="start">Begin</div></a>
 </div>
   <div id="data_button">Data</div>

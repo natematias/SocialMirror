@@ -11,6 +11,6 @@
 
 <!-- microphone -->
 <div id="bullseye_auxilliary">
-<img id="record" src="images/microphone.png" width="30"/>
-<img id="save" src="images/save_checklist.png" width="30"/>
+<!--<img id="record" src="images/microphone.png" width="30"/>-->
+<a href="#participant"><img id="save" src="images/save_checklist.png" width="30"/></a>
 </div>

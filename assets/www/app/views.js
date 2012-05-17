@@ -4,12 +4,10 @@ var SplashView = Backbone.View.extend({
   events: function() {
     return MOBILE ?
     {
-      "touchend #discard": "discardSurvey",
+      "touchend #discard": "restartSurvey",
       "touchend #save_survey": "saveSurvey",
-      "touchend #start": "startDemo",
       "touchend #data_button": "displayData",
-//      "touchend #nameutton": "saveName",
-      "touchend #save": "participantSurvey", // sidebar
+//      "touchend #save": "participantSurvey", // sidebar
       "touchstart .bullseye_option": 'startOptionDrag', // dragging options
       "touchmove .bullseye_option": 'continueDragging',
       "touchend .bullseye_option": 'endOptionDrag',
@@ -17,25 +15,19 @@ var SplashView = Backbone.View.extend({
       "touchmove #bullseye_options": 'continueScrolling',
       "touchend #bullseye_options": 'endScrolling'
     }:{
-      "click #discard": "discardSurvey",
+      "click #discard": "restartSurvey",
       "click #save_survey": "saveSurvey",
-      "click #start": "startDemo",
       "click #data_button": "displayData",
-//      "click #nameutton": "saveName",
-      "click #save": "participantSurvey", //sidebar
+//      "click #save": "participantSurvey", //sidebar
       "mousedown .bullseye_option": 'startOptionDrag', // dragging options
       "mousemove .bullseye_option": 'continueDragging',
       "mouseup .bullseye_option": 'endOptionDrag',
-      "mouseout .bullseye_option": 'continueDragging' // scrolling option bar
-/*      "mousedown #bullseye_options": 'startScrolling',
-      "mousemove #bullseye_options": 'continueScrolling',
-      "mouseup #bullseye_options": 'endScrolling',
-      "mouseout #bullseye_options": 'endScrolling'*/
+      "mouseout .bullseye_option": 'continueDragging' 
     }
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'loadMLGroups', 'startDemo', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'removeRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey', 'displayData');
+    _.bindAll(this, 'render', 'loadMLGroups', 'positionView', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'removeRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey', 'displayData');
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
@@ -57,8 +49,7 @@ var SplashView = Backbone.View.extend({
    $(this.el).load("templates/splash.template");
   },
 
-  startDemo: function(e){
-    this.cleanEvent(e);
+  positionView: function(){
     //$(this.el).load("templates/bullseye.template");
     that = this;
     $.ajax({url:"templates/bullseye.template",
@@ -287,7 +278,7 @@ var SplashView = Backbone.View.extend({
                                
     report_array.push(participant_information);
     this.records.create(report_array);
-    window.location.reload();
+    restartSurvey();
   },
   
   displayData: function(element){
@@ -301,8 +292,8 @@ var SplashView = Backbone.View.extend({
     //alert(report_string);
   },
 
-  discardSurvey: function(){
-    window.location.reload();
+  restartSurvey: function(){
+    window.location = window.location.toString().split("#")[0];
   }
 });
 window.MOBILE = navigator.userAgent.match(/mobile/i);
