@@ -67,7 +67,6 @@ var SplashView = Backbone.View.extend({
   },
  
   drawBullseye: function(){
-
     canvas_element = document.getElementById("bullseye_canvas");
     if(canvas_element.getContext){
       this.canvas = canvas_element.getContext('2d');
@@ -123,7 +122,7 @@ var SplashView = Backbone.View.extend({
     }else{
       return;
     }
-    if( navigator.userAgent.match(/Android/i) ) {
+    if(MOBILE) {
       e.preventDefault();
       pageX = e.originalEvent.touches[0].pageX;
       pageY = e.originalEvent.touches[0].pageY;
@@ -296,6 +295,6 @@ var SplashView = Backbone.View.extend({
     window.location = window.location.toString().split("#")[0];
   }
 });
-window.MOBILE = navigator.userAgent.match(/mobile/i);
+window.MOBILE = (navigator.userAgent.match(/mobile/i) || navigator.userAgent.match(/Playbook/i))
 var splashView = new SplashView;
 $("#frame").html(splashView.el);
