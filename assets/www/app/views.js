@@ -8,6 +8,8 @@ var SplashView = Backbone.View.extend({
       "touchend #save_survey": "saveSurvey",
       "touchend #data_button": "displayData",
       "touchend #open_add_bullseye_option": "openAddBullseyeOption",
+      "touchend #cancel_add_option": "cancelAddBullseyeOption",
+      "touchend #add_option": "addBullseyeOption",
 //      "touchend #save": "participantSurvey", // sidebar
       "touchstart .bullseye_option": 'startOptionDrag', // dragging options
       "touchmove .bullseye_option": 'continueDragging',
@@ -159,17 +161,40 @@ var SplashView = Backbone.View.extend({
       pageX = e.pageX;
       pageY = e.pageY;
     }
+
+   if(this.isInside(ml_option, $('#bullseye_option_trash'))){
+     $('#bullseye_option_trash').addClass("trash_hover");
+   }else{
+     $('#bullseye_option_trash').removeClass("trash_hover");
+   }
+
+
     if(this.dragpoint_offset_x){
       ml_option.css({"left": pageX-this.dragpoint_offset_x, "top": pageY-this.dragpoint_offset_y})
     }
     return true;
   },
 
+  isInside:function(option, target){
+    var center_x = ml_option.offset().left + ml_option.width()/2;
+    var center_y = ml_option.offset().top + ml_option.height()/2;
+    var horiz_inside = (center_x > target.offset().left) && (center_x < target.offset().left + target.width());
+    var vert_inside = (center_y > target.offset().top) && (center_y < target.offset().top + target.height());
+    return horiz_inside && vert_inside;
+  },
+
+  removeOption: function(option){
+    option.remove();
+    $('#bullseye_option_trash').removeClass("trash_hover");
+  },
+
   endOptionDrag: function(e){
     unzoom_multiplier = 0.25;
     ml_option = $(e.target);
 
-    if(ml_option.offset().left + (ml_option.width()/7) < $("#bullseye_options").width()){
+    if(this.isInside(ml_option, $('#bullseye_option_trash'))){
+      this.removeOption(ml_option);
+    }else if(ml_option.offset().left + (ml_option.width()/7) < $("#bullseye_options").width()){
       ml_option.removeClass("dragging");
       ml_option.css({"position":"relative", "top":"auto", "left":"auto"});
       this.removeRelationship(ml_option.text());
