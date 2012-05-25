@@ -10,6 +10,7 @@ var SplashView = Backbone.View.extend({
       "touchend #open_add_bullseye_option": "openAddBullseyeOption",
       "touchend #cancel_add_option": "cancelAddBullseyeOption",
       "touchend #add_option": "addBullseyeOption",
+      "keypress #bullseye_option": "onBullseyeOptionEnter",
 //      "touchend #save": "participantSurvey", // sidebar
       "touchstart .bullseye_option": 'startOptionDrag', // dragging options
       "touchmove .bullseye_option": 'continueDragging',
@@ -24,6 +25,7 @@ var SplashView = Backbone.View.extend({
       "click #open_add_bullseye_option": "openAddBullseyeOption",
       "click #cancel_add_option": "cancelAddBullseyeOption",
       "click #add_option": "addBullseyeOption",
+      "keypress #bullseye_option": "onBullseyeOptionEnter",
 //      "click #save": "participantSurvey", //sidebar
       "mousedown .bullseye_option": 'startOptionDrag', // dragging options
       "mousemove .bullseye_option": 'continueDragging',
@@ -67,6 +69,12 @@ var SplashView = Backbone.View.extend({
                 that.drawBullseye();
               }
     });
+  },
+
+  onBullseyeOptionEnter: function(e){
+    if(e.keyCode == 13){
+      this.addBullseyeOption();
+    }
   },
 
   addBullseyeOption: function(){
