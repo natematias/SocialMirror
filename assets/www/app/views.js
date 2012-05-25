@@ -72,7 +72,12 @@ var SplashView = Backbone.View.extend({
   addBullseyeOption: function(){
     option_input = $('#bullseye_option');
     var name = option_input.val();
+    if(/[A-Za-z]/i.exec(name)==null){
+      option_input.focus();
+      return;
+    }
     option_input.val("");
+    option_input.focus();
     $('#controls').after(this.bullseye_option_template({name:name}));
   },
 
@@ -87,7 +92,7 @@ var SplashView = Backbone.View.extend({
               dataType: "text",
               success: function(data){
                 $(that.el).append(_.template(data));
-                that.drawBullseye();
+                $('#bullseye_option').focus();
               }
     });
 
