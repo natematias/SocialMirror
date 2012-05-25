@@ -1,0 +1,12 @@
+<div class="add_bullseye_option_dialogue">
+  <form>
+  <div class="form_item">
+    <div class="label">Name</div>
+    <input type="text" name="option" id="bullseye_option"/>
+  </div>
+  <div>
+    <div class="button" id="add_option">Add Name</div>
+    <div class="button" id="cancel_add_option">Cancel</div>
+  </div>
+  </form>
+</div>

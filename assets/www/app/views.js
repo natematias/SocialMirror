@@ -7,6 +7,7 @@ var SplashView = Backbone.View.extend({
       "touchend #discard": "restartSurvey",
       "touchend #save_survey": "saveSurvey",
       "touchend #data_button": "displayData",
+      "touchend #open_add_bullseye_option": "openAddBullseyeOption",
 //      "touchend #save": "participantSurvey", // sidebar
       "touchstart .bullseye_option": 'startOptionDrag', // dragging options
       "touchmove .bullseye_option": 'continueDragging',
@@ -18,6 +19,9 @@ var SplashView = Backbone.View.extend({
       "click #discard": "restartSurvey",
       "click #save_survey": "saveSurvey",
       "click #data_button": "displayData",
+      "click #open_add_bullseye_option": "openAddBullseyeOption",
+      "click #cancel_add_option": "cancelAddBullseyeOption",
+      "click #add_option": "addBullseyeOption",
 //      "click #save": "participantSurvey", //sidebar
       "mousedown .bullseye_option": 'startOptionDrag', // dragging options
       "mousemove .bullseye_option": 'continueDragging',
@@ -39,7 +43,8 @@ var SplashView = Backbone.View.extend({
     //this.current_participant = new Participant({name:"Default", member_status:"Default", years:0, role:"Default"});
     this.participants.add({name:"Default", member_status:"Default", years:0, role:"Default"});
     this.current_participant = this.participants.first();
-   
+
+    this.bullseye_option_template =  _.template('<div class="bullseye_option" id="<%=name%>"><%=name%></div>');
 
     this.loadMLGroups();
     this.render();
@@ -60,6 +65,30 @@ var SplashView = Backbone.View.extend({
                 that.drawBullseye();
               }
     });
+  },
+
+  addBullseyeOption: function(){
+    option_input = $('#bullseye_option');
+    var name = option_input.val();
+    option_input.val("");
+    $('#controls').after(this.bullseye_option_template({name:name}));
+  },
+
+  cancelAddBullseyeOption: function(){
+    $('.add_bullseye_option_dialogue').remove()
+  },
+
+  openAddBullseyeOption: function(){
+    that = this;
+    $.ajax({url:"templates/add_bullseye_option.template",
+              type: "GET",
+              dataType: "text",
+              success: function(data){
+                $(that.el).append(_.template(data));
+                that.drawBullseye();
+              }
+    });
+
   },
 
   saveName: function(){
@@ -277,7 +306,7 @@ var SplashView = Backbone.View.extend({
                                
     report_array.push(participant_information);
     this.records.create(report_array);
-    restartSurvey();
+    this.restartSurvey();
   },
   
   displayData: function(element){

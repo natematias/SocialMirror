@@ -1,5 +1,9 @@
 <!-- left bar -->
 <div id="bullseye_options">
+  <div id="controls">
+    <div id="open_add_bullseye_option" class="control_button">+</div>
+      <div id="bullseye_option_trash" class="control_button">&nbsp; - &nbsp;</div>
+  </div>
 <%  groups.each(function(group){ 
 %>
 

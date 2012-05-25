@@ -19,4 +19,4 @@ var SocialMirrorRouter = Backbone.Router.extend({
 
 });
 var router = new SocialMirrorRouter();
-Backbone.history.start({pushState: false, root: "/"})
+Backbone.history.start({pushState: false, root: "/medialab/socialmirror/"})

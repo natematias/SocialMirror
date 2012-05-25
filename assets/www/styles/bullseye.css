@@ -11,6 +11,17 @@
   padding-left:10px;
 }
 
+.control_button{
+  font-size:48px;
+  line-height:48px;
+  padding-right:10px;
+  padding-left:10px;
+  background:#ccc;
+  color:#333;
+  display:inline-block;
+  cursor:pointer;
+}
+
 .bullseye_option{
   display:inline-block;
   background:rgb(33,85,97);
@@ -22,6 +33,7 @@
   border-radius:5px;
   margin-bottom:4px;
   margin-top:4px;
+  margin-right:4px;
 /*  -moz-box-shadow:    1px 1px 1px 1px #666;
   -webkit-box-shadow: 1px 1px 1px 1px #666;*/
 /*  box-shadow: 1px 1px 2px 0px #666;*/
@@ -105,4 +117,35 @@
 
 #bullseye_auxilliary img{
   margin-top:150px;
+}
+
+.add_bullseye_option_dialogue{
+  position:absolute;
+  left:200px;
+  top:80px;
+  width:320px;
+  padding:20px;
+  text-align:left;
+  font-size:36px;
+  border-radius:5px;
+  -moz-box-shadow:    1px 1px 1px 1px #666;
+  -webkit-box-shadow: 1px 1px 1px 1px #666;
+  box-shadow: 1px 1px 2px 0px #666;
+  background:rgb(255,220,186);
+  color:#974;
+  z-index:1000;
+}
+
+.add_bullseye_option_dialogue .form_item{
+  margin:10px;
+  line-height:48px;
+}
+
+.add_bullseye_option_dialogue .label{
+  display:inline-block;
+}
+
+#bullseye_option{
+  width:100%;
+  font-size:36px;
 }
