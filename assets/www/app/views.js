@@ -78,6 +78,7 @@ var SplashView = Backbone.View.extend({
       this.canvas.beginPath();
       this.canvas.fillStyle = "rgb(137,190,204)";
       this.canvas.arc(midpoint, height, height*0.73,0,(Math.PI/180)*180,true)
+      this.canvas.fill();
     }
   },
 
