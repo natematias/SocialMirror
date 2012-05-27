@@ -13,6 +13,10 @@ body{
   height:99%;
 }
 
+#logo{
+  text-align:center;
+}
+
 #logo img{
   vertical-align:top;
   margin-top:50px;
@@ -33,6 +37,7 @@ img.leftlogo{
 
 #initial_buttons_view{
   margin-top:80px;
+  text-align:center;
 }
 
 #initial_buttons_view .button{

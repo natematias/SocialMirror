@@ -52,7 +52,7 @@ var BullseyeMoveView = Backbone.View.extend({
     }
     option_input.val("");
     option_input.focus();
-    $('#controls').after(this.bullseye_option_template({name:name}));
+    $('#bullseye_options').prepend(this.bullseye_option_template({name:name}));
   },
 
   cancelAddBullseyeOption: function(){

@@ -1,23 +1,47 @@
-#bullseye_options{
+#bullseye_option_area{
   background:white;
   width:210px;
   text-align:left;
   height:100%;
-  overflow-y:scroll;
-  overflow-x:hidden;
   display:inline-block;
   margin:0px;
   padding:0px;
+}
+
+#controls{
+  height:55px;
+  background:#333;
+  padding-top:5px;
+  text-align:center;
+/*  -moz-box-shadow:    3px 3px 3px 3px #666;
+  -webkit-box-shadow: 3px 3px 3px 3px #666;
+  box-shadow: 3px 3px 3px 0px #666;*/
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#toggle_connection.selected{
+  background:red;
+}
+
+#bullseye_options{
+  overflow-y:scroll;
+  overflow-x:hidden;
   padding-left:10px;
+  /* FIX THIS. Should be auto-set based on browser size */
+  height:90%;
 }
 
 .control_button{
-  font-size:48px;
-  line-height:48px;
+  font-size:45px;
+  line-height:45px;
   padding-right:10px;
   padding-left:10px;
-  background:#ccc;
-  color:#333;
+  background:#111;
+  color:#eee;
   display:inline-block;
   cursor:pointer;
 }
@@ -44,6 +68,10 @@
   user-select: none;
   cursor:pointer;
   z-index:100;
+}
+
+.bullseye_option.connecting{
+  background:red;
 }
 
 .bullseye_option.dragging{

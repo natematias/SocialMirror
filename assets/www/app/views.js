@@ -9,11 +9,13 @@ var SplashView = Backbone.View.extend({
       "touchend #data_button": "displayData",
       "touchstart #bullseye_options": 'startScrolling', // scrolling option bar
       "touchmove #bullseye_options": 'continueScrolling',
-      "touchend #bullseye_options": 'endScrolling'
+      "touchend #bullseye_options": 'endScrolling',
+      "touchend #toggle_connection": "toggleConnection"
     }:{
       "click #discard": "restartSurvey",
       "click #save_survey": "saveSurvey",
       "click #data_button": "displayData",
+      "click #toggle_connection": "toggleConnection"
     }
   },
 
@@ -21,6 +23,8 @@ var SplashView = Backbone.View.extend({
     _.bindAll(this, 'render', 'loadMLGroups', 'positionView', 'drawBullseye', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey', 'displayData');
 
     this.bullseye_move_view = null;
+    this.bullseye_connect_view = null;
+    this.bullseye_mode = "";
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
@@ -38,6 +42,21 @@ var SplashView = Backbone.View.extend({
     this.loadMLGroups();
     this.render();
   },
+
+  toggleConnection: function(e){
+    toggle_button = $(e.target);
+    if(this.bullseye_mode == "move"){
+      this.bullseye_move_view.undelegateEvents();
+      this.bullseye_connect_view.delegateEvents();
+      this.bullseye_mode = "connect";
+      toggle_button.addClass("selected");
+    }else if(this.bullseye_mode == "connect"){
+      this.bullseye_connect_view.undelegateEvents();
+      this.bullseye_move_view.delegateEvents();
+      this.bullseye_mode = "move";
+      toggle_button.removeClass("selected");
+    }
+  },
    
   render: function(){
    $(this.el).load("templates/splash.template");
@@ -53,6 +72,9 @@ var SplashView = Backbone.View.extend({
                 $(that.el).html(_.template(data, {groups:that.mlgroups, close_label:"collaboration", middle_label:"connection", far_label:"inspiration"}));
                 that.drawBullseye();
                 that.bullseye_move_view = new BullseyeMoveView({el:$("#frame")});
+                that.bullseye_mode="move";
+                that.bullseye_connect_view = new BullseyeConnectView({el: $("#frame")});
+                that.bullseye_connect_view.undelegateEvents();
               }
     });
   },
@@ -60,7 +82,9 @@ var SplashView = Backbone.View.extend({
   drawBullseye: function(){
     canvas_element = document.getElementById("bullseye_canvas");
     if(canvas_element.getContext){
-      this.canvas = canvas_element.getContext('2d');
+      if(this.canvas == undefined){
+        this.canvas = canvas_element.getContext('2d');
+      }
       midpoint = canvas_element.offsetWidth/2;
       height = canvas_element.offsetHeight * 2 + 60;
       // bullseye_origin and bullseye_distance are used to calculate categories
