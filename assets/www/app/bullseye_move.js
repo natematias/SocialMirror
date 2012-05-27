@@ -24,30 +24,19 @@ var BullseyeMoveView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'positionView', 'drawBullseye', 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'removeRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey', 'displayData');
+    _.bindAll(this, 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'saveOrUpdateRelationship', 'removeRelationship' );
 
     this.participants = splashView.participants;
     this.mlgroups = splashView.mlgroups;
     this.relationships = splashView.relationships;
     this.records = splashView.records;
     this.dragging = null;
+    this.bullseye_origin = splashView.bullseye_origin;
+    this.bullseye_distances = splashView.bullseye_distances;
 
     this.bullseye_option_template =  splashView.bullseye_option_template;
   },
    
-  positionView: function(){
-    //$(this.el).load("templates/bullseye.template");
-    that = this;
-    $.ajax({url:"templates/bullseye.template",
-              type: "GET",
-              dataType: "text",
-              success: function(data){
-                $(that.el).html(_.template(data, {groups:that.mlgroups, close_label:"collaboration", middle_label:"connection", far_label:"inspiration"}));
-                that.drawBullseye();
-              }
-    });
-  },
-
   onBullseyeOptionEnter: function(e){
     if(e.keyCode == 13){
       this.addBullseyeOption();
@@ -82,36 +71,7 @@ var BullseyeMoveView = Backbone.View.extend({
     });
 
   },
-
-  saveName: function(){
-    alert("Save Name");
-  },
  
-  drawBullseye: function(){
-    canvas_element = document.getElementById("bullseye_canvas");
-    if(canvas_element.getContext){
-      this.canvas = canvas_element.getContext('2d');
-      midpoint = canvas_element.offsetWidth/2;
-      height = canvas_element.offsetHeight * 2 + 60;
-      // bullseye_origin and bullseye_distance are used to calculate categories
-      this.bullseye_origin = {x:midpoint, y:height}
-      this.bullseye_distances = {medium:height*0.88, small: height*0.73}
-      bottom_offset = 60;
-      middle_offset = 0;
-      // draw inner circle
-      this.canvas.fillStyle= "rgb(255,255,230)";
-      this.canvas.fillRect(0,0,midpoint*2, height);
-      this.canvas.beginPath();  
-      this.canvas.fillStyle = "rgb(255,220,186)";
-      this.canvas.arc(midpoint,height, this.bullseye_distances.medium,0,(Math.PI/180)*180,true)
-      this.canvas.fill();
-      this.canvas.beginPath();
-      this.canvas.fillStyle = "rgb(137,190,204)";
-      this.canvas.arc(midpoint, height, height*0.73,0,(Math.PI/180)*180,true)
-      this.canvas.fill();
-    }
-  },
-
   startOptionDrag: function(e){
     ml_option = $(e.target);
     if(this.dragging !=null){
@@ -264,71 +224,4 @@ var BullseyeMoveView = Backbone.View.extend({
    return {x: pageX, y:pageY};
   },
 
-  // Scrollbar handlers
-  startScrolling: function(e){
-    option_bar = $(e.target);
-    this.scrollOrigin = option_bar.scrollTop();
-    this.scrollTouchOrigin = this.getTouchLocation(e);
-    this.scrolling = true;
-  },
-
-  continueScrolling: function(e){
-    if(this.scrolling){
-      current_location = this.getTouchLocation(e);
-      $(e.target).scrollTop(this.scrollOrigin + (this.scrollTouchOrigin.y - current_location.y));
-    }
-  },
-
-  endScrolling: function(e){
-    this.scrollOrigin = null;
-    this.scrolling = false;
-  },
-
-  cleanEvent: function(e){
-    e.stopPropagation()
-    e.preventDefault()
-  },
-  
-  // survey saving and discarding methods
-  participantSurvey: function(element){
-    that = this;
-    $.ajax({url:"templates/participant.template",
-              type: "GET",
-              dataType: "text",
-              success: function(data){
-                $(that.el).html(_.template(data));
-              }
-    });
-  },
-
-  saveSurvey: function(element){
-    var report_array = new Array()
-    this.relationships.each(function(relationship){
-      report_array.push(relationship.toJSON());
-    });
-    participant_information = {affiliation: $("#affiliation").val(),
-                               connection_years: $("#connection_years").val()}
-                               
-    report_array.push(participant_information);
-    this.records.create(report_array);
-    this.restartSurvey();
-  },
-  
-  displayData: function(element){
-    that = this;
-    report_string = "";
-    this.records.fetch();
-    this.records.each(function(record){
-      report_string += JSON.stringify(record.toJSON()) + ",\n";
-    });
-    $("#initial_buttons_view").append(_.template("<div id='data_area'><textarea id='data_textarea'><%=report_string%></textarea></div>", {report_string:report_string}));
-    //alert(report_string);
-  },
-
-  restartSurvey: function(){
-    window.location = window.location.toString().split("#")[0];
-  }
 });
-
-var splashView = new SplashView;
-$("#frame").html(splashView.el);

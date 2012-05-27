@@ -9,6 +9,7 @@ var SplashView = Backbone.View.extend({
       "touchend #data_button": "displayData",
       "touchstart #bullseye_options": 'startScrolling', // scrolling option bar
       "touchmove #bullseye_options": 'continueScrolling',
+      "touchend #bullseye_options": 'endScrolling'
     }:{
       "click #discard": "restartSurvey",
       "click #save_survey": "saveSurvey",
@@ -18,6 +19,8 @@ var SplashView = Backbone.View.extend({
 
   initialize: function(){
     _.bindAll(this, 'render', 'loadMLGroups', 'positionView', 'drawBullseye', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey', 'displayData');
+
+    this.bullseye_move_view = null;
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
@@ -49,14 +52,11 @@ var SplashView = Backbone.View.extend({
               success: function(data){
                 $(that.el).html(_.template(data, {groups:that.mlgroups, close_label:"collaboration", middle_label:"connection", far_label:"inspiration"}));
                 that.drawBullseye();
+                that.bullseye_move_view = new BullseyeMoveView({el:$("#frame")});
               }
     });
   },
 
-  saveName: function(){
-    alert("Save Name");
-  },
- 
   drawBullseye: function(){
     canvas_element = document.getElementById("bullseye_canvas");
     if(canvas_element.getContext){
