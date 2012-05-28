@@ -16,15 +16,29 @@
   var Relationship = Backbone.Model.extend({
   });
 
+
   var MLGroups = Backbone.Collection.extend({
-    model: MLGroup
+    model: MLGroup,
   });
+
+  MLGroups.prototype.add = function(mlgroup){
+    var isDupe = this.any(function(_group){
+      return _group.get("name") === mlgroup.get("name");
+    });
+    if(isDupe){
+      return false;
+    }
+    Backbone.Collection.prototype.add.call(this, mlgroup);
+  };
 
   var Participants = Backbone.Collection.extend({
     model: Participant
   });
 
   var ParticipantMLGroupRelationships = Backbone.Collection.extend({
+  });
+
+  var MLGroupMLGroupRelationships = Backbone.Collection.extend({
   });
 
   var SMJSON = Backbone.Model.extend({

@@ -52,6 +52,7 @@ var BullseyeMoveView = Backbone.View.extend({
     }
     option_input.val("");
     option_input.focus();
+    splashView.mlgroups.add(new MLGroup({name: name}))
     $('#bullseye_options').prepend(this.bullseye_option_template({name:name}));
   },
 
@@ -118,10 +119,10 @@ var BullseyeMoveView = Backbone.View.extend({
      $('#bullseye_option_trash').removeClass("trash_hover");
    }
 
-
     if(this.dragpoint_offset_x){
       ml_option.css({"left": pageX-this.dragpoint_offset_x, "top": pageY-this.dragpoint_offset_y})
     }
+    splashView.drawBullseye();
     return true;
   },
 
@@ -134,6 +135,10 @@ var BullseyeMoveView = Backbone.View.extend({
   },
 
   removeOption: function(option){
+    group = splashView.mlgroups.where({name: option.text()});
+    if(group){
+      splashView.mlgroups.remove(group);
+    }
     option.remove();
     $('#bullseye_option_trash').removeClass("trash_hover");
   },

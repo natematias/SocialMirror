@@ -26,6 +26,9 @@ var SplashView = Backbone.View.extend({
     this.bullseye_connect_view = null;
     this.bullseye_mode = "";
 
+    this.connections = new MLGroupMLGroupRelationships();
+    this.connection_elements = new Array();
+
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
     this.relationships = new ParticipantMLGroupRelationships();
@@ -103,7 +106,32 @@ var SplashView = Backbone.View.extend({
       this.canvas.fillStyle = "rgb(137,190,204)";
       this.canvas.arc(midpoint, height, height*0.73,0,(Math.PI/180)*180,true)
       this.canvas.fill();
+      this.drawAllLinkLines();
     }
+  },
+
+  drawAllLinkLines: function(){
+    var that = this;
+    $.each(this.connection_elements, function(key, connection){
+      that.drawLinkLine(that.getElementCenter(connection.origin_el), that.getElementCenter(connection.destination_el));
+    });
+  },
+
+  getElementCenter: function(el){
+    var x = el.offset().left + el.width()/2 -  $('#bullseye_canvas').offset().left;
+    var y = el.offset().top + el.height()/2 - $('#bullseye_canvas').offset().top;
+    return {x: x, y:y};
+  },
+
+  drawLinkLine: function(origin_location, destination_location){
+    this.canvas.lineWidth = 6;
+    this.canvas.strokeStyle = "#5ac";
+    this.canvas.lineCap="round";
+    this.canvas.beginPath();
+    this.canvas.moveTo(origin_location.x, origin_location.y);
+    this.canvas.lineTo(destination_location.x, destination_location.y);
+    this.canvas.closePath();
+    this.canvas.stroke();
   },
 
   recordParticipantMLGroupRelationship: function(element){
@@ -136,6 +164,22 @@ var SplashView = Backbone.View.extend({
      });
   },
 
+  saveConnection: function(origin_el, destination_el, origin_center, destination_center){
+    origin = this.connections.where({name: origin_el.text()});
+    destination = this.connections.where({name: ml_option.text()});
+ 
+    found = this.connections.any(function(connection){
+     return 0;//TODO: Fix
+     // return(connection.origin.get("name") == origin.get("name") && connection.destination.get("name") == destination.get("name"));
+    });
+    if(found){
+      return;
+    }else{
+      this.connection_elements.push({origin_el: origin_el, destination_el: destination_el});
+      this.connections.add({origin: origin, destination: destination});
+    }
+  },
+  
   saveOrUpdateRelationship: function(groupName, relationshipType){
     var that = this;
     var updated = null;

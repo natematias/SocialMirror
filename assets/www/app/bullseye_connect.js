@@ -32,8 +32,6 @@ var BullseyeConnectView = Backbone.View.extend({
 
     this.draw_counter = 0;
 
-    this.connections = new Array();
-
   },
 
   startConnectionDragging: function(e){
@@ -87,15 +85,9 @@ var BullseyeConnectView = Backbone.View.extend({
     this.drawLinkLine(this.drag_origin_location, touch);
   },
 
-  drawLinkLine: function(origin, destination){
+  drawLinkLine: function(origin_location, destination_location){
     splashView.drawBullseye();
-    this.canvas.lineWidth = 2;
-    this.canvas.lineCap="round";
-    this.canvas.beginPath();
-    this.canvas.moveTo(origin.x, origin.y);
-    this.canvas.lineTo(destination.x, destination.y);
-    this.canvas.closePath();
-    this.canvas.stroke();
+    splashView.drawLinkLine(origin_location, destination_location);
   },
 
   disableLineDragging: function(){
@@ -108,14 +100,14 @@ var BullseyeConnectView = Backbone.View.extend({
   noConnection: function(e){
     if(this.dragging!=null){
       this.disableLineDragging();
-      this.drawBullseye();
+      splashView.drawBullseye();
     }
   },
 
   successfulConnection: function(e){
     ml_option = $(e.target);
     if(this.dragging!=null){
-      this.connections.push({origin: this.drag_origin, destination:ml_option});
+      splashView.saveConnection(this.drag_origin, ml_option);
       ml_option.removeClass("connecting");
       this.disableLineDragging();
     }
