@@ -5,30 +5,43 @@ var BullseyeConnectView = Backbone.View.extend({
     return MOBILE ?
     {
       "touchstart .bullseye_option": 'startConnectionDragging', // dragging options
-      "touchmove #bullseye": 'continueConnectionDragging',
-      "touchend #bullseye": 'noConnection',
+      "touchend .bullseye_option": "endTouchConnectionDragging",
+      "touchmove .bullseye_option": 'continueTouchConnectionDragging'
     }:{
       "mousedown .bullseye_option": 'startConnectionDragging', // dragging options
       "mouseenter .bullseye_option": 'completeConnectionDragging', // dragging options
+/*      "mouseenter .bullseye_option": 'continueTouchConnectionDragging',*/
       "mouseleave .bullseye_option": 'leaveConnectionDragging', // dragging options
-      "mousemove #bullseye": 'continueConnectionDragging',
+/*      "mouseleave .bullseye_option": 'continueTouchConnectionDragging', */
+      "mousemove #bullseye": 'continueTouchConnectionDragging',
+/*      "mousemove .bullseye_option": 'continueTouchConnectionDragging',
+      "mouseup #bullseye": "endTouchConnectionDragging",*/
+      "mouseup .bullseye_option": "endTouchConnectionDragging",
       "mouseup #bullseye": 'noConnection',
       "mouseup .bullseye_option": 'successfulConnection',
-      "mouseout #bullseye": 'continueConnectionDragging' 
+      "mouseout #bullseye": 'continueTouchConnectionDragging' 
     }
   },
 
   initialize: function(){
-    _.bindAll(this,"startConnectionDragging", "continueConnectionDragging", "leaveConnectionDragging", "noConnection", "successfulConnection");
+    _.bindAll(this,"startConnectionDragging", "continueConnectionDragging", "leaveConnectionDragging", "noConnection", "successfulConnection", "continueTouchConnectionDragging", "endTouchConnectionDragging");
     this.canvas = splashView.canvas;
     this.participants = splashView.participants;
     this.mlgroups = splashView.mlgroups;
     this.relationships = splashView.relationships;
     this.records = splashView.records;
     this.dragging = null;
+    this.drag_origin = null;
+    this.drag_destination = null;
     this.bullseye_origin = splashView.bullseye_origin;
     this.bullseye_distances = splashView.bullseye_distances;
     this.bullseye_option_template =  splashView.bullseye_option_template;
+
+    if(MOBILE){
+      this.touchzone = 10;// add boundary space for touch detection
+    }else{
+      this.touchzone = 0;
+    }
 
     this.draw_counter = 0;
   },
@@ -43,6 +56,39 @@ var BullseyeConnectView = Backbone.View.extend({
       this.drag_origin_location = this.getElementCenter(ml_option);
       ml_option.addClass("connecting");
     }
+  },
+
+  getTouchingOption: function(e){
+    that = this;
+    var touch = this.getTouchLocation(e);
+    var horiz_offset = $("#bullseye_options").width();
+    var return_val = null;
+ 
+    $.each($("#bullseye_options").children(), function(index, option){
+      option = $(option);
+      if(touch.x > (option.offset().left - horiz_offset - that.touchzone) && (touch.x < (option.offset().left + option.width() - horiz_offset + that.touchzone)) && touch.y > (option.offset().top - that.touchzone) && (touch.y < option.offset().top + option.height() + that.touchzone)){
+        return_val = option;
+      }
+    });
+    return return_val;
+  },
+
+  endTouchConnectionDragging: function (e){
+    if(this.dragging==null || this.drawCounter()!=true){
+      return;
+    }
+
+
+    if(this.drag_destination != null){
+      splashView.saveConnection(this.drag_origin, this.drag_destination);
+      this.drag_destination.removeClass("connecting");
+      this.disableLineDragging();
+    }else{
+      this.disableLineDragging();
+      splashView.drawBullseye();
+    }
+
+    this.drag_origin.removeClass("connecting");
   },
 
   completeConnectionDragging: function (e){
@@ -62,6 +108,8 @@ var BullseyeConnectView = Backbone.View.extend({
     ml_option.removeClass("connecting");
   },
 
+  
+
   drawCounter: function(){
     if(this.draw_counter == 0){
       this.draw_counter += 1
@@ -74,8 +122,31 @@ var BullseyeConnectView = Backbone.View.extend({
     return false
   },
 
+  continueTouchConnectionDragging: function(e){
+    if(this.dragging==null || this.drawCounter()!=true){
+      return;
+    }
+
+    touching_option = this.getTouchingOption(e); 
+    if(touching_option == null || this.drag_origin.get(0) === touching_option.get(0)){
+      //if we're moving off a destination:
+      if(this.drag_destination != null){
+        this.drag_destination.removeClass("connecting");
+        this.drag_destination = null;
+      }
+      //draw the link line to the touch location
+      touch = this.getTouchLocation(e);
+      this.drawLinkLine(this.drag_origin_location, touch);
+      return;
+    }else{
+      touching_option.addClass("connecting");
+      // draw the link line to the centre of the destination element
+      this.drawLinkLine(this.drag_origin_location, this.getElementCenter(touching_option));
+      this.drag_destination = touching_option;
+    }
+  },
+
   continueConnectionDragging: function(e){
-    canvas_element = $(e.target);
     if(this.dragging== null || this.drawCounter()!=true){
       return
     }

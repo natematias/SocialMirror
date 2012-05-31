@@ -1,4 +1,5 @@
 *.swp
+*.swo
 bin/*
 gen/*
 *.DS_Store
