@@ -78,17 +78,16 @@ var BullseyeConnectView = Backbone.View.extend({
       return;
     }
 
+    this.drag_destination.removeClass("connecting");
 
     if(this.drag_destination != null){
       splashView.saveConnection(this.drag_origin, this.drag_destination);
-      this.drag_destination.removeClass("connecting");
       this.disableLineDragging();
     }else{
       this.disableLineDragging();
       splashView.drawBullseye();
     }
 
-    this.drag_origin.removeClass("connecting");
   },
 
   completeConnectionDragging: function (e){

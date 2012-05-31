@@ -33,6 +33,7 @@ var BullseyeMoveView = Backbone.View.extend({
     this.dragging = null;
     this.bullseye_origin = splashView.bullseye_origin;
     this.bullseye_distances = splashView.bullseye_distances;
+    this.add_bullseye_option_template = null;
 
     this.bullseye_option_template =  splashView.bullseye_option_template;
   },
@@ -61,15 +62,22 @@ var BullseyeMoveView = Backbone.View.extend({
   },
 
   openAddBullseyeOption: function(){
-    that = this;
-    $.ajax({url:"templates/add_bullseye_option.template",
-              type: "GET",
-              dataType: "text",
-              success: function(data){
-                $(that.el).append(_.template(data));
-                $('#bullseye_option').focus();
-              }
-    });
+    // cache the add template, to fix Blackberry Tablet issue
+    if(this.add_bullseye_option_template != null){
+      $(this.el).append(this.add_bullseye_option_template);
+      $("#bullseye_option").focus()
+    }else{
+      that = this;
+      $.ajax({url:"templates/add_bullseye_option.template",
+                type: "GET",
+                dataType: "text",
+                success: function(data){
+                  that.add_bullseye_option_template = _.template(data);
+                  $(that.el).append(that.add_bullseye_option_template);
+                  $('#bullseye_option').focus();
+                }
+      });
+    }
 
   },
  
