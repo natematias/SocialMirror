@@ -6,7 +6,7 @@ var BullseyeConnectView = Backbone.View.extend({
     {
       "touchstart .bullseye_option": 'startConnectionDragging', // dragging options
       "touchmove #bullseye": 'continueConnectionDragging',
-      "touchend #bullseye": 'endConnectionDragging',
+      "touchend #bullseye": 'noConnection',
     }:{
       "mousedown .bullseye_option": 'startConnectionDragging', // dragging options
       "mouseenter .bullseye_option": 'completeConnectionDragging', // dragging options
@@ -19,7 +19,7 @@ var BullseyeConnectView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this,"startConnectionDragging", "continueConnectionDragging");
+    _.bindAll(this,"startConnectionDragging", "continueConnectionDragging", "leaveConnectionDragging", "noConnection", "successfulConnection");
     this.canvas = splashView.canvas;
     this.participants = splashView.participants;
     this.mlgroups = splashView.mlgroups;
@@ -31,7 +31,6 @@ var BullseyeConnectView = Backbone.View.extend({
     this.bullseye_option_template =  splashView.bullseye_option_template;
 
     this.draw_counter = 0;
-
   },
 
   startConnectionDragging: function(e){

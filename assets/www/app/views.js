@@ -24,7 +24,9 @@ var SplashView = Backbone.View.extend({
 
     this.bullseye_move_view = null;
     this.bullseye_connect_view = null;
-    this.bullseye_mode = "";
+    this.bullseye_mode = "move";
+
+    this.bullseye_connect_view = null;
 
     this.connections = new MLGroupMLGroupRelationships();
     this.connection_elements = new Array();
@@ -50,14 +52,20 @@ var SplashView = Backbone.View.extend({
     toggle_button = $(e.target);
     if(this.bullseye_mode == "move"){
       this.bullseye_move_view.undelegateEvents();
-      this.bullseye_connect_view.delegateEvents();
-      this.bullseye_mode = "connect";
       toggle_button.addClass("selected");
+
+      if(this.bullseye_connect_view == null){
+        this.bullseye_connect_view = new BullseyeConnectView({el: $("#frame")});
+      }else{
+        this.bullseye_connect_view.delegateEvents();
+      }
+
+      this.bullseye_mode = "connect";
     }else if(this.bullseye_mode == "connect"){
+      toggle_button.removeClass("selected");
       this.bullseye_connect_view.undelegateEvents();
       this.bullseye_move_view.delegateEvents();
       this.bullseye_mode = "move";
-      toggle_button.removeClass("selected");
     }
   },
    
@@ -76,8 +84,6 @@ var SplashView = Backbone.View.extend({
                 that.drawBullseye();
                 that.bullseye_move_view = new BullseyeMoveView({el:$("#frame")});
                 that.bullseye_mode="move";
-                that.bullseye_connect_view = new BullseyeConnectView({el: $("#frame")});
-                that.bullseye_connect_view.undelegateEvents();
               }
     });
   },

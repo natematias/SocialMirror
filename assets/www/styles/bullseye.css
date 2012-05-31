@@ -9,7 +9,7 @@
 }
 
 #controls{
-  height:55px;
+  height:70px;
   background:#333;
   padding-top:5px;
   text-align:center;
@@ -32,14 +32,14 @@
   overflow-x:hidden;
   padding-left:10px;
   /* FIX THIS. Should be auto-set based on browser size */
-  height:90%;
+  height:88%;
 }
 
 .control_button{
-  font-size:45px;
-  line-height:45px;
-  padding-right:10px;
-  padding-left:10px;
+  font-size:60px;
+  line-height:60px;
+  padding-right:5px;
+  padding-left:5px;
   background:#111;
   color:#eee;
   display:inline-block;
