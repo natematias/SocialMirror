@@ -97,12 +97,12 @@ var BullseyeMoveView = Backbone.View.extend({
       var pageY = e.pageY;
     }
  
-    this.dragpoint_offset_x = ml_option.width();
-    // 12 because that is the font size
-    this.dragpoint_offset_y = ml_option.height();
-    ml_option.css({"position":"absolute"});
     ml_option.addClass("dragging");
+    this.dragpoint_offset_x = ml_option.width()/2;
+    this.dragpoint_offset_y = ml_option.height()/2;
+    ml_option.css({"position":"absolute"});
     ml_option.css({"left": pageX-this.dragpoint_offset_x, "top": pageY-this.dragpoint_offset_y})
+    splashView.drawBullseye();
   },
 
   continueDragging: function(e){
@@ -168,6 +168,7 @@ var BullseyeMoveView = Backbone.View.extend({
       ml_option.css({"left":drop_offset});
       ml_option.css({"top": ml_option.offset().top+4});// 12px font 2px padding
       this.recordParticipantMLGroupRelationship(ml_option);
+      splashView.drawBullseye();
     }
     this.dragpoint_offset_x = null;
     this.dragoint_offset_y = null;
