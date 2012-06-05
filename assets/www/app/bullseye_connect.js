@@ -6,6 +6,7 @@ var BullseyeConnectView = Backbone.View.extend({
     {
       "touchstart .bullseye_option": 'startConnectionDragging', // dragging options
       "touchend .bullseye_option": "endTouchConnectionDragging",
+      "touchend": "endTouchConnectionDragging",
       "touchmove .bullseye_option": 'continueTouchConnectionDragging'
     }:{
       "mousedown .bullseye_option": 'startConnectionDragging', // dragging options
