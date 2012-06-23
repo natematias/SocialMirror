@@ -29,7 +29,6 @@ var SplashView = Backbone.View.extend({
     this.bullseye_connect_view = null;
 
     this.connections = new MLGroupMLGroupRelationships();
-    this.connection_elements = new Array();
 
     this.participants = new Participants();
     this.mlgroups = new MLGroups();
@@ -118,8 +117,8 @@ var SplashView = Backbone.View.extend({
 
   drawAllLinkLines: function(){
     var that = this;
-    $.each(this.connection_elements, function(key, connection){
-      that.drawLinkLine(that.getElementCenter(connection.origin_el), that.getElementCenter(connection.destination_el));
+    this.connections.each(function(connection, key){
+      that.drawLinkLine(that.getElementCenter(connection.attributes.origin_el), that.getElementCenter(connection.attributes.destination_el));
     });
   },
 
@@ -131,7 +130,7 @@ var SplashView = Backbone.View.extend({
 
   drawLinkLine: function(origin_location, destination_location){
     this.canvas.lineWidth = 6;
-    this.canvas.strokeStyle = "#5ac";
+    this.canvas.strokeStyle = "#633";
     this.canvas.lineCap="round";
     this.canvas.beginPath();
     this.canvas.moveTo(origin_location.x, origin_location.y);
@@ -170,19 +169,17 @@ var SplashView = Backbone.View.extend({
      });
   },
 
-  saveConnection: function(origin_el, destination_el, origin_center, destination_center){
-    origin = this.connections.where({name: origin_el.text()});
-    destination = this.connections.where({name: ml_option.text()});
+  saveConnection: function(origin_el, destination_el){
+    var origin = this.mlgroups.where({name: this.htmlEncode(origin_el.text())})[0];
+    var destination = this.mlgroups.where({name: this.htmlEncode(destination_el.text())})[0];
  
     found = this.connections.any(function(connection){
-     return 0;//TODO: Fix
-     // return(connection.origin.get("name") == origin.get("name") && connection.destination.get("name") == destination.get("name"));
+      return ((connection.attributes.origin.cid == origin.cid && connection.attributes.destination.cid == destination.cid) || (connection.attributes.origin.cid == destination.cid && connection.attributes.destination.cid == origin.cid));
     });
     if(found){
       return;
     }else{
-      this.connection_elements.push({origin_el: origin_el, destination_el: destination_el});
-      this.connections.add({origin: origin, destination: destination});
+      this.connections.add({origin: origin, destination: destination, origin_el: origin_el, destination_el: destination_el});
     }
   },
   
@@ -279,6 +276,10 @@ var SplashView = Backbone.View.extend({
     });
     $("#initial_buttons_view").append(_.template("<div id='data_area'><textarea id='data_textarea'><%=report_string%></textarea></div>", {report_string:report_string}));
     //alert(report_string);
+  },
+
+  htmlEncode: function(value){
+    return jQuery("<div/>").html(value).html();
   },
 
   restartSurvey: function(){

@@ -39,6 +39,8 @@
   });
 
   var MLGroupMLGroupRelationships = Backbone.Collection.extend({
+    model: Relationship,
+    localStorage: new Backbone.LocalStorage("SocialMirror")
   });
 
   var SMJSON = Backbone.Model.extend({
