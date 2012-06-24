@@ -2,7 +2,7 @@
 var SplashView = Backbone.View.extend({
      
   events: function() {
-    return MOBILE ?
+    return window.MOBILE ?
     {
       "touchend #discard": "restartSurvey",
       "touchend #save_survey": "saveSurvey",
@@ -20,8 +20,9 @@ var SplashView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'render', 'loadMLGroups', 'positionView', 'drawBullseye', 'recordParticipantMLGroupRelationship', 'participantSurvey', 'saveOrUpdateRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey', 'displayData');
+    _.bindAll(this, 'render', 'loadMLGroups', 'positionView', 'drawBullseye', 'participantSurvey', 'saveOrUpdateRelationship', 'startScrolling', 'continueScrolling', 'endScrolling', 'saveSurvey', 'displayData', 'removeRelationship');
 
+    this.checkEnvironment();
     this.bullseye_move_view = null;
     this.bullseye_connect_view = null;
     this.bullseye_mode = "move";
@@ -118,7 +119,7 @@ var SplashView = Backbone.View.extend({
   drawAllLinkLines: function(){
     var that = this;
     this.connections.each(function(connection, key){
-      that.drawLinkLine(that.getElementCenter(connection.attributes.origin_el), that.getElementCenter(connection.attributes.destination_el));
+      that.drawLinkLine(that.getElementCenter(connection.get("origin_el")), that.getElementCenter(connection.get("destination_el")));
     });
   },
 
@@ -139,9 +140,6 @@ var SplashView = Backbone.View.extend({
     this.canvas.stroke();
   },
 
-  recordParticipantMLGroupRelationship: function(element){
-    this.saveOrUpdateRelationship(element.text(), this.bullseyeCategory(element));
-  },
 
   bullseyeCategory: function(element){
     //this.bullseye_origin = {x:midpoint, y:height}
@@ -188,7 +186,7 @@ var SplashView = Backbone.View.extend({
     var updated = null;
     //first check the list of current relationships
     this.relationships.each(function(relationship){
-      if(relationship.get("group").get("name")==groupName){
+      if(that.htmlEncode(relationship.get("group").get("name"))==that.htmlEncode(groupName)){
         relationship.set("type", relationshipType);
         updated = true;
         return;
@@ -197,7 +195,7 @@ var SplashView = Backbone.View.extend({
     if(updated){return}
     // if not, then add a new relationship
     this.mlgroups.each(function(group){
-      if(group.get("name") == groupName){
+      if(that.htmlEncode(group.get("name")) == that.htmlEncode(groupName)){
         that.relationships.add({group:group, participant:that.participant,
                                 type:relationshipType})
         return;
@@ -205,8 +203,33 @@ var SplashView = Backbone.View.extend({
     });
   },
 
+  removeRelationship: function(groupName){
+    that = this;
+    var redraw = false;
+    this.relationships.each(function(relationship){
+      if(that.htmlEncode(relationship.get("group").get("name"))==that.htmlEncode(groupName)){
+        var group = relationship.get("group");
+        var found = new Array()
+        that.connections.each(function(connection){
+          if(connection.get("origin").cid == group.cid|| connection.get("destination").cid == group.cid){
+            found.push(connection.cid);
+          }
+        });
+        $.each(found, function(found_cid){
+          redraw = true;
+          that.connections.remove(found[found_cid]);
+        });
+        console.log(found);
+        that.relationships.remove(relationship);
+      }
+    });
+    if(redraw){
+      this.drawBullseye();
+    }
+  },
+
   getTouchLocation: function(e){
-    if(MOBILE) {
+    if(window.MOBILE) {
       e.preventDefault();
       var pageX = e.originalEvent.touches[0].pageX;
       var pageY = e.originalEvent.touches[0].pageY;
@@ -219,6 +242,7 @@ var SplashView = Backbone.View.extend({
 
   // Scrollbar handlers
   startScrolling: function(e){
+    console.log("SCROLLING IT STARTS");
     option_bar = $(e.target);
     this.scrollOrigin = option_bar.scrollTop();
     this.scrollTouchOrigin = this.getTouchLocation(e);
@@ -281,11 +305,16 @@ var SplashView = Backbone.View.extend({
   htmlEncode: function(value){
     return jQuery("<div/>").html(value).html();
   },
+  
+  checkEnvironment: function(){
+    window.MOBILE = (navigator.userAgent.match(/mobile/i) || navigator.userAgent.match(/Playbook/i)|| navigator.userAgent.match(/Android/i))
+
+  },
 
   restartSurvey: function(){
     window.location = window.location.toString().split("#")[0];
   }
 });
-window.MOBILE = (navigator.userAgent.match(/mobile/i) || navigator.userAgent.match(/Playbook/i))
+console.log(navigator.userAgent);
 var splashView = new SplashView;
 $("#frame").html(splashView.el);

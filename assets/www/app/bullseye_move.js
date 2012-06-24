@@ -2,7 +2,7 @@
 var BullseyeMoveView = Backbone.View.extend({
      
   events: function() {
-    return MOBILE ?
+    return window.MOBILE ?
     {
       "touchend #open_add_bullseye_option": "openAddBullseyeOption",
       "touchend #cancel_add_option": "cancelAddBullseyeOption",
@@ -24,7 +24,8 @@ var BullseyeMoveView = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship', 'saveOrUpdateRelationship', 'removeRelationship' );
+    _.bindAll(this, 'startOptionDrag', 'continueDragging', 'recordParticipantMLGroupRelationship');
+    splashView.checkEnvironment();
 
     this.participants = splashView.participants;
     this.mlgroups = splashView.mlgroups;
@@ -88,7 +89,7 @@ var BullseyeMoveView = Backbone.View.extend({
     }else{
       this.dragging = ml_option;
     }
-    if(MOBILE) {
+    if(window.MOBILE) {
       e.preventDefault();
       var pageX = e.originalEvent.touches[0].pageX;
       var pageY = e.originalEvent.touches[0].pageY;
@@ -109,10 +110,14 @@ var BullseyeMoveView = Backbone.View.extend({
     e.preventDefault();
     ml_option = $(e.target);
     if(this.dragging!=null && ml_option.get(0) === this.dragging.get(0)){
+  /*  }else if(this.dragging == null){
+      console.log("INITIATING STARTOPTIONDRAG");
+      this.startOptionDrag(e);
+      return;*/
     }else{
       return;
     }
-    if(MOBILE) {
+    if(window.MOBILE) {
       e.preventDefault();
       pageX = e.originalEvent.touches[0].pageX;
       pageY = e.originalEvent.touches[0].pageY;
@@ -158,9 +163,9 @@ var BullseyeMoveView = Backbone.View.extend({
     if(this.isInside(ml_option, $('#bullseye_option_trash'))){
       this.removeOption(ml_option);
     }else if(ml_option.offset().left + (ml_option.width()/7) < $("#bullseye_options").width()){
+      splashView.removeRelationship(ml_option.text());
       ml_option.removeClass("dragging");
       ml_option.css({"position":"relative", "top":"auto", "left":"auto"});
-      this.removeRelationship(ml_option.text());
     }else{
       drop_offset = ml_option.offset().left + ml_option.width()*unzoom_multiplier;
       ml_option.css({"position":"absolute"});
@@ -176,7 +181,7 @@ var BullseyeMoveView = Backbone.View.extend({
   },
 
   recordParticipantMLGroupRelationship: function(element){
-    this.saveOrUpdateRelationship(element.text(), this.bullseyeCategory(element));
+    splashView.saveOrUpdateRelationship(element.text(), this.bullseyeCategory(element));
   },
 
   bullseyeCategory: function(element){
@@ -195,16 +200,7 @@ var BullseyeMoveView = Backbone.View.extend({
     }
   },
  
-  removeRelationship: function(groupName){
-    that = this;
-    this.relationships.each(function(relationship){
-      if(relationship.get("group").get("name")==groupName){
-        that.relationships.remove(relationship);
-      }
-    });
-  },
-
-  saveOrUpdateRelationship: function(groupName, relationshipType){
+/*  saveOrUpdateRelationship: function(groupName, relationshipType){
     var that = this;
     var updated = null;
     //first check the list of current relationships
@@ -224,10 +220,10 @@ var BullseyeMoveView = Backbone.View.extend({
         return;
       }
     });
-  },
+  },*/
 
   getTouchLocation: function(e){
-    if(MOBILE) {
+    if(window.MOBILE) {
       e.preventDefault();
       var pageX = e.originalEvent.touches[0].pageX;
       var pageY = e.originalEvent.touches[0].pageY;

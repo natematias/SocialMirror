@@ -26,6 +26,7 @@ var BullseyeConnectView = Backbone.View.extend({
 
   initialize: function(){
     _.bindAll(this,"startConnectionDragging", "continueConnectionDragging", "leaveConnectionDragging", "noConnection", "successfulConnection", "continueTouchConnectionDragging", "endTouchConnectionDragging");
+    splashView.checkEnvironment();
     this.canvas = splashView.canvas;
     this.participants = splashView.participants;
     this.mlgroups = splashView.mlgroups;
@@ -107,8 +108,6 @@ var BullseyeConnectView = Backbone.View.extend({
     }
     ml_option.removeClass("connecting");
   },
-
-  
 
   drawCounter: function(){
     if(this.draw_counter == 0){
