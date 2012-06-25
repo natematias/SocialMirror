@@ -37,12 +37,28 @@ var BullseyeMoveView = Backbone.View.extend({
     this.add_bullseye_option_template = null;
 
     this.bullseye_option_template =  splashView.bullseye_option_template;
+    this.loadInstructions();
   },
    
   onBullseyeOptionEnter: function(e){
     if(e.keyCode == 13){
       this.addBullseyeOption();
     }
+  },
+
+  loadInstructions: function(){
+    $.ajax({url:"templates/instructions_bullseye_move.template",
+              type: "GET",
+              dataType: "text",
+              success: function(data){
+                $(that.el).after(_.template(data)());
+                if(window.MOBILE){
+                  $('#close_instructions').on("touchend", splashView.closeInstructions);
+                }else{
+                  $('#close_instructions').on("click", splashView.closeInstructions);
+                }
+              }
+    });
   },
 
   addBullseyeOption: function(){

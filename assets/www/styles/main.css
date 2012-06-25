@@ -4,6 +4,7 @@ body{
   background:white;
   margin:0px;
   padding:0px;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
 /* HTC Touch 4G */
@@ -15,6 +16,12 @@ body{
 
 #logo{
   text-align:center;
+}
+
+#introduction{
+  text-align:left;
+  width:600px;
+  display:inline-block;
 }
 
 #logo img{
@@ -36,7 +43,7 @@ img.leftlogo{
 }
 
 #initial_buttons_view{
-  margin-top:80px;
+  margin-top:30px;
   text-align:center;
 }
 
@@ -71,4 +78,33 @@ img.leftlogo{
   height:100px;
   right:0px;
   bottom:0px;
+}
+
+.instructions{
+  position:absolute;
+  background:white;
+  left:250px;
+  top:50px;
+  width:400px;
+  border:1px solid #666;
+  border-radius:10px;
+  z-index:1000;
+*  -moz-box-shadow:    3px 3px 3px 3px #666;
+  -webkit-box-shadow: 3px 3px 3px 3px #666;
+  box-shadow: 3px 3px 3px 0px #666;*/
+}
+
+.instructions h1{
+  margin:0px;
+  background:black;
+  padding:5px;
+  color:white;
+  font-size:24px;
+  border-radius:10px;
+}
+
+.instructions p{
+  padding-left:10px;
+  padding-right:10px;
+  padding-bottom:10px;
 }

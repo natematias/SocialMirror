@@ -10,12 +10,12 @@ var SplashView = Backbone.View.extend({
       "touchstart #bullseye_options": 'startScrolling', // scrolling option bar
       "touchmove #bullseye_options": 'continueScrolling',
       "touchend #bullseye_options": 'endScrolling',
-      "touchend #toggle_connection": "toggleConnection"
+      "touchend #toggle_connection": "toggleConnection",
     }:{
       "click #discard": "restartSurvey",
       "click #save_survey": "saveSurvey",
       "click #data_button": "displayData",
-      "click #toggle_connection": "toggleConnection"
+      "click #toggle_connection": "toggleConnection",
     }
   },
 
@@ -131,7 +131,7 @@ var SplashView = Backbone.View.extend({
 
   drawLinkLine: function(origin_location, destination_location){
     this.canvas.lineWidth = 6;
-    this.canvas.strokeStyle = "#633";
+    this.canvas.strokeStyle = "#366";
     this.canvas.lineCap="round";
     this.canvas.beginPath();
     this.canvas.moveTo(origin_location.x, origin_location.y);
@@ -309,6 +309,10 @@ var SplashView = Backbone.View.extend({
   checkEnvironment: function(){
     window.MOBILE = (navigator.userAgent.match(/mobile/i) || navigator.userAgent.match(/Playbook/i)|| navigator.userAgent.match(/Android/i))
 
+  },
+
+  closeInstructions: function(){
+    $('.instructions').remove();
   },
 
   restartSurvey: function(){

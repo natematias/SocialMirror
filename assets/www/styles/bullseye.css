@@ -29,6 +29,7 @@
 
 #bullseye_options{
   overflow-y:scroll;
+/*  overflow-y: hidden;*/
   overflow-x:hidden;
   padding-left:10px;
   /* FIX THIS. Should be auto-set based on browser size */
@@ -48,7 +49,7 @@
 
 .bullseye_option{
   display:inline-block;
-  background:rgb(33,85,97);
+  background:#333;
   color:white;
   font-size:20px;
   padding:8px;

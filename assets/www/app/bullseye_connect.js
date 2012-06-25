@@ -46,6 +46,22 @@ var BullseyeConnectView = Backbone.View.extend({
     }
 
     this.draw_counter = 0;
+    this.loadInstructions();
+  },
+
+  loadInstructions: function(){
+    $.ajax({url:"templates/instructions_bullseye_connect.template",
+              type: "GET",
+              dataType: "text",
+              success: function(data){
+                $(that.el).after(_.template(data)());
+                if(window.MOBILE){
+                  $('#close_instructions').on("touchend", splashView.closeInstructions);
+                }else{
+                  $('#close_instructions').on("click", splashView.closeInstructions);
+                }
+              }
+    });
   },
 
   startConnectionDragging: function(e){
