@@ -28,8 +28,8 @@
 }
 
 #bullseye_options{
-  overflow-y:scroll;
-/*  overflow-y: hidden;*/
+/*  overflow-y:scroll;*/
+  overflow-y: hidden;
   overflow-x:hidden;
   padding-left:10px;
   /* FIX THIS. Should be auto-set based on browser size */
@@ -121,13 +121,13 @@
 
 #bullseye #middle_label{
   color:#974;
-  top:220px;
+  top:320px;
   left:2px;
 }
 
 #bullseye #close_label{
   color:rgb(197, 240, 244);
-  top:430px;
+  top:580px;
   left:2px;
 }
 

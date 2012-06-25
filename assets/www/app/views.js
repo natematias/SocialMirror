@@ -279,25 +279,32 @@ var SplashView = Backbone.View.extend({
   },
 
   saveSurvey: function(element){
-    var report_array = new Array()
+    var report_hash = {}
+    report_hash["relationships"] = new Array();
+    report_hash["connections"] = new Array();
     this.relationships.each(function(relationship){
-      report_array.push(relationship.toJSON());
+      report_hash["relationships"].push(relationship.toJSON());
     });
     participant_information = {affiliation: $("#affiliation").val(),
                                connection_years: $("#connection_years").val()}
                                
-    report_array.push(participant_information);
-    this.records.create(report_array);
+    report_hash["participant_information"] = participant_information;
+    this.connections.each(function(connection){
+      report_hash["connections"].push(connection.toJSON())
+    });
+    this.records.create(report_hash);
     this.restartSurvey();
   },
   
   displayData: function(element){
     that = this;
-    report_string = "";
+    report_string = "[";
     this.records.fetch();
     this.records.each(function(record){
       report_string += JSON.stringify(record.toJSON()) + ",\n";
     });
+    report_string = report_string.substring(0,report_string.length-2); // get rid of trailing comma: DO THIS BETTER
+    report_string +="]";
     $("#initial_buttons_view").append(_.template("<div id='data_area'><textarea id='data_textarea'><%=report_string%></textarea></div>", {report_string:report_string}));
     //alert(report_string);
   },

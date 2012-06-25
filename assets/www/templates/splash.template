@@ -2,9 +2,10 @@
   <img class="leftlogo" src="images/civic_media_logo.png"/>
   <img class="main" src="images/social_mirror_logo.png"/>
   <img class="rightlogo" src="images/rsa_logo.png"/>
+  <br/>
+  <div id="introduction"><h2>Tell us about Fruit</h2><p>Here is introductory text. It includes introductory questions and introductory instructions, but it may not be as clear about introductoriness of the ins and outs of troductioneering.</p></div>
 </div>
 <div id="initial_buttons_view">
-<!--  <div class="button" id="demo">Demonstration</div>-->
   <a href="#position"><div class="button" id="start">Begin</div></a>
 </div>
   <div id="data_button">Data</div>

@@ -1,0 +1,7 @@
+<div id="instructions_bullseye_move" class="instructions">
+  <h1>Connecting Items on the Chart</h1>
+  <p>Please add names to the bullseye chart. Items to the bottom are closest to you, and items to the top are furthest away. To remove an option from the bullseye, simply drag it back into the area on the left.</p>
+  <p>You will also be asked to indicate connections between the options. Simply press "next" to move into this stage. You can always return by pressing the "move" button.</p>
+  <p>When you are finished, please press the "next" button"</p>
+  <div class="button" id="close_instructions">(Close)</div>
+</div>
