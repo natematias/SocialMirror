@@ -31,8 +31,9 @@
 /*  overflow-y:scroll;*/
   overflow-y: hidden;
   overflow-x:hidden;
-  padding-left:10px;
+  padding-left:5px;
   /* FIX THIS. Should be auto-set based on browser size */
+  padding-right:10px;
   height:88%;
 }
 
@@ -53,8 +54,8 @@
   color:white;
   font-size:20px;
   padding:8px;
-  padding-top:2px;
-  padding-bottom:2px;
+  padding-top:6px;
+  padding-bottom:6px;
   border-radius:5px;
   margin-bottom:4px;
   margin-top:4px;
@@ -103,7 +104,7 @@
 #bullseye div{
   z-index:11;
   position:absolute;
-  font-size:64px;
+  font-size:32px;
   font-weight:bold;
   opacity:0.5;
   -webkit-user-select: none;
@@ -126,7 +127,8 @@
 }
 
 #bullseye #close_label{
-  color:rgb(197, 240, 244);
+  /*color:rgb(217, 250, 254);*/
+  color:rgb(77, 110, 114);
   top:580px;
   left:2px;
 }

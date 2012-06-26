@@ -1,7 +1,9 @@
 <div id="instructions_bullseye_move" class="instructions">
-  <h1>Connecting Items on the Chart</h1>
-  <p>Please add names to the bullseye chart. Items to the bottom are closest to you, and items to the top are furthest away. To remove an option from the bullseye, simply drag it back into the area on the left.</p>
-  <p>You will also be asked to indicate connections between the options. Simply press "next" to move into this stage. You can always return by pressing the "move" button.</p>
-  <p>When you are finished, please press the "next" button"</p>
+  <h1>Who has working relationships?</h1>
+  <p>Who do you think has a working relationship? To draw connections between names, press on a name and drag between them. If both names are highlighted red, release your finger to complete the link.</p>
+  <div align="center"><img src="images/connection_example.png"/></div>
+  <p><strong>Note:</strong> This prototype does not permit you to remove links.</p>
+  <p>If you think of new names, click on the <span style="background:#f33; color:white; padding:2px;"><strong>&gt;&gt;</strong></span>  button again to resume adding and placing names in the survey area.</p>
+  <p>When you are finished, press the right arrow on the right to continue.</p>
   <div class="button" id="close_instructions">(Close)</div>
 </div>

@@ -1,20 +1,24 @@
 <div id="participant_form" align="center">
 <div class="form_dialogue">
-<!--  <div class="form_item">
-    <div class="label" >Name:</div>
-    <input type="text" name="Name" id="participant_name"/>
-  </div>-->
+  <h2>Finally: some details about yourself:</h2>
   <div class="form_item">
-    <div class="label">Your affiliation with the Media Lab:</div>
-    <select name="affiliation" id="affiliation">
-      <option>Member</option>
-      <option>Prospective Member</option>
-      <option>Invited Attendee</option>
-      <option>Press</option>
-      <option>Other</option>
+    <div class="label" >Full Name &amp; Title:</div>
+    <input type="text" name="participant_name" id="participant_name"/>
+  </div>
+  <div class="form_item">
+    <div class="label">Role or position:</div>
+    <select name="role" id="role">
+      <option>Student</option>
+      <option>Academic Researcher</option>
+      <option>PI or Research Lead</option>
+      <option>Non-Academic</option>
     </select>
   </div>
   <div class="form_item">
+    <div class="label">Three words to describe your interests:</div>
+    <input type="text" name="interests" id="interests"/>
+  </div>
+<!--  <div class="form_item">
     <div class="label">How long have you been connected with the Lab?</div>
     <select name="connection_years" id="connection_years">
       <option>1</option>
@@ -44,14 +48,14 @@
       <option>25</option>
       <option>26</option>
     </select>
-  </div>
+  </div>-->
 <!--  <div class="form_item">
     <div class="label">What is your role at your company?</div>
     <input type="text" name="role" id="participant_role"/>
   </div>-->
 
   <div>
-    <div class="button" id="save_survey">Save</div>
+    <div class="button" id="save_survey">Save Survey</div>
     <div class="button" id="discard">Discard</div>
   </div>
 </div>

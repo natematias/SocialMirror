@@ -1,7 +1,8 @@
 <div id="instructions_bullseye_move" class="instructions">
-  <h1>Adding to the Bullseye Chart</h1>
-  <p>Please add names to the bullseye chart. Items to the bottom are closest to you, and items to the top are furthest away. To remove an option from the bullseye, simply drag it back into the area on the left.</p>
-  <p><img src="images/connection_button.png" align="right"/>After you have added elements to the bullseye, please add connections between them by pressing the "connections"  button.</p>
-  <p><img src="images/save_checklist.png" width="30" align="right"/>When you are finished, please press the arrow on the right to continue.</p>
+  <h1>Map out your collaborations, connections, and interests</h1>
+  <p>Tell us who you work with, whose work is close to yours, and whose unrelated work you admire. Simply drag names from the list on the left onto the areas in the middle.</p>
+<p>If you can't find a name, add it by pressing the <strong>+</strong> button.</p>
+<p>To remove a name from the survey, simply drag it back into the list on the left.</p>
+  <p>After you have added names, click the <span style="background:#333; color:white; padding:2px;"><strong>&gt;&gt;</strong></span> button to share your impressions of who on your list has working relationships.</p>
   <div class="button" id="close_instructions">(Close)</div>
 </div>

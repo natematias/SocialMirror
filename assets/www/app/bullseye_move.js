@@ -72,6 +72,7 @@ var BullseyeMoveView = Backbone.View.extend({
     option_input.focus();
     splashView.mlgroups.add(new MLGroup({name: name}))
     $('#bullseye_options').prepend(this.bullseye_option_template({name:name}));
+    splashView.scrollToTop();
   },
 
   cancelAddBullseyeOption: function(){

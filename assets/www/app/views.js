@@ -66,6 +66,8 @@ var SplashView = Backbone.View.extend({
       this.bullseye_connect_view.undelegateEvents();
       this.bullseye_move_view.delegateEvents();
       this.bullseye_mode = "move";
+      this.bullseye_connect_view.disableLineDragging();
+      this.drawBullseye();
     }
   },
    
@@ -80,7 +82,7 @@ var SplashView = Backbone.View.extend({
               type: "GET",
               dataType: "text",
               success: function(data){
-                $(that.el).html(_.template(data, {groups:that.mlgroups, close_label:"collaboration", middle_label:"connection", far_label:"inspiration"}));
+                $(that.el).html(_.template(data, {groups:that.mlgroups, close_label:"you are collaborating now or have worked together in the past", middle_label:"you can see connections between their work and yours, but you haven't worked together", far_label:"you find their work inspiring"}));
                 that.drawBullseye();
                 that.bullseye_move_view = new BullseyeMoveView({el:$("#frame")});
                 that.bullseye_mode="move";
@@ -255,6 +257,10 @@ var SplashView = Backbone.View.extend({
       $(e.target).scrollTop(this.scrollOrigin + (this.scrollTouchOrigin.y - current_location.y));
     }
   },
+  
+  scrollToTop: function(){
+    $('#bullseye_options').scrollTop(0); 
+  },
 
   endScrolling: function(e){
     this.scrollOrigin = null;
@@ -285,12 +291,14 @@ var SplashView = Backbone.View.extend({
     this.relationships.each(function(relationship){
       report_hash["relationships"].push(relationship.toJSON());
     });
-    participant_information = {affiliation: $("#affiliation").val(),
-                               connection_years: $("#connection_years").val()}
+    participant_information = {participant_name: $("#participant_name").val(),
+                               affiliation: $("#role").val(),
+                               interests: $("#interests").val()}
                                
     report_hash["participant_information"] = participant_information;
     this.connections.each(function(connection){
-      report_hash["connections"].push(connection.toJSON())
+      report_hash["connections"].push({origin: connection.get("origin").get("name"),
+                                                      destination: connection.get("destination").get("name")})
     });
     this.records.create(report_hash);
     this.restartSurvey();

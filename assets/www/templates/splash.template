@@ -3,7 +3,10 @@
   <img class="main" src="images/social_mirror_logo.png"/>
   <img class="rightlogo" src="images/rsa_logo.png"/>
   <br/>
-  <div id="introduction"><h2>Tell us about Fruit</h2><p>Here is introductory text. It includes introductory questions and introductory instructions, but it may not be as clear about introductoriness of the ins and outs of troductioneering.</p></div>
+  <div id="introduction"><h2>Collaboration Networks at the 8th UKSNA Conference</h2>
+  <p>What are your networks of academic interest and collaboration? Take this network survey to help us map out the connections at the 8th UK Social Network Association Conference.</p>
+  <p>Social Mirror is a tablet application for conducting network surveys, by <nobr><strong>J. Nathan Matias</strong></nobr> of the MIT Media Lab and <strong>Gaia Marcus</strong> of The RSA.</p>
+  <p>If you would like to use Social Mirror in your research, contact us at <strong>natematias@gmail.com</strong> and <strong> gaia.marcus@gmail.com</strong>.</p></div>
 </div>
 <div id="initial_buttons_view">
   <a href="#position"><div class="button" id="start">Begin</div></a>
